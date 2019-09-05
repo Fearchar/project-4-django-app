@@ -6,7 +6,9 @@ class App extends React.Component {
   componentDidMount() {
     axios.get('/api/cards/')
       .then(res => console.log(res.data))
+      .then(this.getAndPostCards())
   }
+  
   render() {
     return(
       <h1>Hello Django</h1>
