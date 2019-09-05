@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
-# Create your views here.
+from .models import Card
+from .serializers import CardSerializer
+
+class CardList(APIView):
+    def get(self, _request):
+        cards = Card.objects.all()
+        serialzer = CardSerializer(cards, many=True)
+        return Response(serialzer.data)
