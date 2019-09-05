@@ -1,18 +1,18 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Player, Card, Deck, Game
-from .serializers import PlayerSerializer, CardSerializer, DeckSerializer, GameSerializer
+from .models import User, Card, Deck, Game
+from .serializers import UserSerializer, CardSerializer, DeckSerializer, GameSerializer
 
-class PlayerList(APIView):
+class UserList(APIView):
 
     def get(self, _request):
-        players = Player.objects.all()
-        serialzer = PlayerSerializer(players, many=True)
+        users = User.objects.all()
+        serialzer = UserSerializer(users, many=True)
         return Response(serialzer.data)
 
     def post(self, request):
-        serializer = PlayerSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()#user=request.user)
             return Response(serializer.data, status=201)
