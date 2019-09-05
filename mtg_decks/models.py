@@ -28,10 +28,10 @@ class Deck(models.Model):
         return f'{self.name} ({self.created_by})'
 
 class Game(models.Model):
-    created_by = models.ManyToManyField(User, related_name='games_created')
+    created_by = models.ForeignKey(User, null=True, related_name='games_created', on_delete=models.SET_NULL)
     date_played = models.CharField(max_length=50)
     users = models.ManyToManyField(User, related_name='games_played')
     decks = models.ManyToManyField(Deck, related_name='games')
 
     def __str__(self):
-        return f'{self.users} ({self.date_played})'
+        return f'{self.created_by} ({self.date_played})'

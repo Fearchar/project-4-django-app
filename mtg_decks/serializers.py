@@ -6,25 +6,28 @@ class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Card
-        fields = ('name', 'manaCost', 'cmc', 'type', 'rarity', 'set', 'text', 'imageUrl')
+        fields = ('id', 'name', 'manaCost', 'cmc', 'type', 'rarity', 'set', 'text', 'imageUrl')
 
 class DeckSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Deck
-        fields = ('name', 'win_rate')
+        fields = ('id', 'name', 'win_rate')
 
 class GameSerializer(serializers.ModelSerializer):
 
+    decks = DeckSerializer()
+
     class Meta:
         model = Game
-        fields = ('name', 'win_rate', 'date_played')
+        fields = ('id', 'decks', 'date_played')
 
 class UserSerializer(serializers.ModelSerializer):
     games_played = GameSerializer(many=True)
     decks_created = DeckSerializer(many=True)
     decks_played = DeckSerializer(many=True)
     collection = CardSerializer(many=True)
+
     class Meta:
         model = User
-        fields = ('username', 'games_played', 'decks_created', 'decks_played', 'collection')
+        fields = ('id', 'username', 'games_played', 'decks_created', 'decks_played', 'collection')

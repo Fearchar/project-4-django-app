@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='game',
-            name='Users',
+            name='users',
             field=models.ManyToManyField(related_name='games_played', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
