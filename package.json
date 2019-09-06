@@ -32,6 +32,9 @@
     "webpack-cli": "^3.3.7"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.3.0",
+    "eslint-plugin-react": "^7.14.3",
     "webpack-dev-server": "^3.8.0"
   }
 }

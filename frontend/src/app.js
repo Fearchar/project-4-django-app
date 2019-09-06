@@ -1,17 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import axios from 'axios'
+import { HashRouter, Route, Switch } from 'react-router-dom'
+import 'bulma'
+
+import CardsIndex from './components/CardsIndex'
 
 class App extends React.Component {
-  componentDidMount() {
-    axios.get('/api/cards/')
-      .then(res => console.log(res.data))
-      .then(this.getAndPostCards())
-  }
-  
   render() {
     return(
-      <h1>Hello Django</h1>
+      <HashRouter>
+        <Switch>
+          <Route path="/cards" component={CardsIndex}/>
+        </Switch>
+      </HashRouter>
     )
   }
 }
