@@ -10,7 +10,7 @@ class CardsIndex extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/cards')
+    axios.get('/api/cards/0')
       .then(res => this.setState({cards: res.data}))
   }
 
@@ -25,9 +25,6 @@ class CardsIndex extends React.Component {
               key={card.id}
               className="box column is-one-quarter"
             >
-              <h2
-                className={`button ${!card.manaCost ? 'is-danger' : 'is-link'}`}
-              >{card.name}</h2>
               {!card.imageUrl ? <h3>{card.name}</h3> :
                 <figure className="image">
                   <img src={card.imageUrl} alt={card.name} />

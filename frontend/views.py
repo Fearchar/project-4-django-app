@@ -8,7 +8,7 @@ class Home(View):
         with open(os.path.join(os.path.dirname(__file__), 'dist', 'index.html')) as file:
             return HttpResponse(file.read())
 
-class Assests(View):
+class Assets(View):
 
     def get(self, _request, filename):
         path = os.path.join(os.path.dirname(__file__), 'dist', filename)

@@ -11,6 +11,12 @@ class Command(BaseCommand):
             response = requests.get(url)
             cards = response.json()['cards']
             for card in cards:
+                if not 'text' in card:
+                    print('No Text:', card['name'])
+                if not 'manaCost' in card:
+                    print('No ManaCost:', card['name'])
+                if not 'imageUrl' in card:
+                    print('No ImageUrl:', card['name'])
                 card = {
                     'name': card['name'],
                     'manaCost': '' if not 'manaCost' in card else card['manaCost'],

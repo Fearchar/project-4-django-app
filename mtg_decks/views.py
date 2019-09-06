@@ -21,8 +21,10 @@ class UserList(APIView):
 
 class CardList(APIView):
 
-    def get(self, _request):
-        cards = Card.objects.all()
+    def get(self, _request, page):
+        page_size = 18
+        first_card = page * page_size
+        cards = Card.objects.all()[first_card : first_card + page_size]
         serialzer = CardSerializer(cards, many=True)
         return Response(serialzer.data)
 

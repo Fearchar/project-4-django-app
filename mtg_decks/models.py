@@ -3,13 +3,13 @@ from django.contrib.auth.models import User
 
 class Card(models.Model):
     name = models.CharField(max_length=50)
-    manaCost = models.CharField(max_length=50)
+    manaCost = models.CharField(blank=True, max_length=50)
     cmc = models.FloatField()
     type = models.CharField(max_length=100)
     rarity = models.CharField(max_length=20)
     set = models.CharField(max_length=50)
-    text = models.CharField(max_length=800)
-    imageUrl = models.CharField(max_length=300, blank=True)
+    text = models.CharField(blank=True, max_length=800)
+    imageUrl = models.CharField(blank=True, max_length=300)
     users = models.ManyToManyField(User, related_name='collection')
 
     unique_together = [name, set]
