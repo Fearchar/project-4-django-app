@@ -2,6 +2,11 @@ from rest_framework import serializers
 
 from .models import User, Card, Deck, Game
 
+class UsernameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
+
 class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -9,13 +14,14 @@ class CardSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'manaCost', 'cmc', 'type', 'rarity', 'set', 'text', 'imageUrl')
 
 class DeckSerializer(serializers.ModelSerializer):
+    created_by = UsernameSerializer(read_only=True)
+    cards = CardSerializer(many=True, read_only=True)
 
     class Meta:
         model = Deck
-        fields = ('id', 'name', 'win_rate')
+        fields = ('id', 'name', 'created_by', 'win_rate', 'cards')
 
 class GameSerializer(serializers.ModelSerializer):
-
     decks = DeckSerializer()
 
     class Meta:

@@ -1,12 +1,13 @@
 import React from 'react'
 
-const CardColumns = ({ cards }) => {
+const CardColumns = ({ cards, addCardToDeck}) => {
   return (
     <div className="columns is-multiline">
       {cards.map(card =>
         <div
           key={card.id}
-          className="column is-one-quarter"
+          className="column is-one-quarter card-front"
+          onClick={() => addCardToDeck(card)}
         >
           {!card.imageUrl ? <h3>{card.name}</h3> :
             <figure className="image">

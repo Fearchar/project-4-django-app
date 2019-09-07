@@ -3,7 +3,7 @@ import React from 'react'
 const PaginationBar = () => {
   return (
     <div>
-      <div className="container columns is-multiline is-centered">
+      <div className="container columns is-multiline">
         <div className="column is-1 has-text-centered">
           <button className="button">LL</button>
         </div>

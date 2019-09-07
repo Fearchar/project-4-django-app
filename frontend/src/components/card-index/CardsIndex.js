@@ -10,9 +10,33 @@ class CardsIndex extends React.Component {
   constructor() {
     super()
     this.state = {
+      cards: [],
       deckPanelOpen: true,
-      cards: []
+      deck: []
     }
+    this.addCardToDeck = this.addCardToDeck.bind(this)
+    this.saveDeck = this.saveDeck.bind(this)
+  }
+
+  addCardToDeck(card) {
+    const deck = [...this.state.deck, card]
+    deck.sort((a, b) => {
+      if (a.name < b.name) return -1
+      if (b.name < a.name) return 1
+    })
+    this.setState({ deck })
+  }
+
+  saveDeck() {
+    const deck = {
+      name: 'Test',
+      created_by: 1,
+      win_rate: null,
+      cards: this.state.deck
+    }
+    axios.post('/api/decks/', deck)
+      .then(res => console.log(res.data))
+      .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
   componentDidMount() {
@@ -21,7 +45,6 @@ class CardsIndex extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     if (!this.state.cards[1]) return <h1>Loading...</h1>
     return (
       <div className="container">
@@ -29,11 +52,17 @@ class CardsIndex extends React.Component {
           <div className={`column ${!this.state.deckPanelOpen ? 'is-11' : 'is-9'}`}>
             <FilterBar />
             <PaginationBar />
-            <CardColumns cards={this.state.cards} />
+            <CardColumns
+              cards={this.state.cards}
+              addCardToDeck={this.addCardToDeck}
+            />
             <PaginationBar />
           </div>
           <div className={`column ${!this.state.deckPanelOpen ? 'is-1' : 'is-4'}`}>
-            <DeckPanel />
+            {this.state.deckPanelOpen ? <DeckPanel
+              deck={this.state.deck}
+              saveDeck={this.saveDeck}
+            /> : ''}
           </div>
         </div>
       </div>

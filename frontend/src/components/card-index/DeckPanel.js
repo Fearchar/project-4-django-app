@@ -1,24 +1,30 @@
 import React from 'react'
 
-const DeckPanel = () => {
-  const arr = '_'.repeat(100).split('')
-  console.log(arr)
+const DeckPanel = ({ deck, saveDeck }) => {
   return (
-    <div className="container that">
+    <div className="container">
       <br />
       <nav className="panels">
         <p className="panel-heading">
           Deck Builder / Deck Name
         </p>
-        <div className="this">
+        <div className="panel-block">
+          <button className="button is-half">Restart</button>
+          <button
+            className="button is-half"
+            onClick={saveDeck}
+          >Save</button>
+          <button className="button is-half">Delete</button>
+        </div>
+        <div className="cards-in-deck">
 
           {
-            arr.map((item , i) =>
+            deck.map((card , i) =>
               <div
                 key={i}
                 className="panel-block"
               >
-                <p>Card</p>
+                <p>{card.name}</p>
               </div>
             )
           }

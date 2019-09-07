@@ -44,9 +44,10 @@ class DeckList(APIView):
         return Response(serialzer.data)
 
     def post(self, request):
+        user = User.objects.get(pk=request.data['created_by'])
         serializer = DeckSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()#user=request.user)
+            serializer.save(created_by=user)
             return Response(serializer.data, status=201)
 
         return Response(serializer.errors, status=422)

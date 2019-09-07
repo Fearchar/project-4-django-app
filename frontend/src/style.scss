@@ -1,7 +1,23 @@
-
-.this {
+nav.panels div.cards-in-deck {
   height: 110vh;
   overflow: scroll;
+  border: solid 1px lightgrey;
+  border-top: none;
+  background-color: #fafafa;
+
+  div.panel-block {
+    background-color: white;
+  }
+}
+
+div.card-front {
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 15px;
+
+  &:hover {
+    border-color: dodgerblue;
+  }
 }
 
 @charset "utf-8";

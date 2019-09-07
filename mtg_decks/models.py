@@ -15,7 +15,7 @@ class Card(models.Model):
     unique_together = [name, set]
 
     def __str__(self):
-        return f'{self.name} - {self.type} - {self.rarity} ({self.set})'
+        return f'{self.name}: {self.type} - {self.rarity} ({self.set})'
 
 class Deck(models.Model):
     name = models.CharField(max_length=50)
