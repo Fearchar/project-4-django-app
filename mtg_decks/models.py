@@ -12,17 +12,20 @@ class Card(models.Model):
     imageUrl = models.CharField(blank=True, max_length=300)
     users = models.ManyToManyField(User, related_name='collection')
 
-    unique_together = [name, set]
+    unique_together = ['name', 'set']
 
     def __str__(self):
         return f'{self.name}: {self.type} - {self.rarity} ({self.set})'
 
+# !!! unique_together not working here on in cards. Acording to https://stackoverflow.com/questions/4440010/django-unique-together-with-foreign-keys/4440189 you can add a validate method
 class Deck(models.Model):
     name = models.CharField(max_length=50)
     cards = models.ManyToManyField(Card, related_name='decks')
     win_rate = models.FloatField(blank=True, null=True)
     created_by = models.ForeignKey(User, null=True, related_name='decks_created', on_delete=models.SET_NULL)
     users = models.ManyToManyField(User, related_name='decks_played')
+
+    unique_together = [['name', 'created_by']]
 
     def __str__(self):
         return f'{self.name} ({self.created_by})'

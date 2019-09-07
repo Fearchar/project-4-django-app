@@ -29,14 +29,17 @@ class CardsIndex extends React.Component {
   }
 
   saveDeck() {
-    const deckCards = {
+    const cardIds = this.state.deckCards.map(card => card.id)
+    const deckRequest = {
       name: this.state.deckName,
-      created_by: 'admin',
-      win_rate: null
+      // !!! Need to change this to pk here and on the backend, once you have auth up and running
+      created_by_pk: 'Test',
+      win_rate: null,
+      card_pks: cardIds
     }
-    axios.post('/api/decks/', deckCards)
+    axios.post('/api/decks/', deckRequest)
       .then(res => console.log(res.data))
-      .catch(err => this.setState({ errors: err.response.data.errors }))
+      // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
   componentDidMount() {

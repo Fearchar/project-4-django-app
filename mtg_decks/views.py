@@ -46,7 +46,7 @@ class DeckList(APIView):
 # !!! Needs to check if user is is_valid and possibly that they're the one signed in. I also need to check that the cards are valid. Should be simpler when auth is linked up
     def post(self, request):
         # !!! Consider changing for pk
-        user = User.objects.get(pk=request.data['created_by_pk'])
+        user = User.objects.get(username=request.data['created_by_pk'])
         serializer = DeckSerializer(data=request.data)
         if serializer.is_valid():
             cards = [Card.objects.get(pk=pk) for pk in request.data['card_pks']]
