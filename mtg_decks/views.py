@@ -43,12 +43,14 @@ class DeckList(APIView):
         serialzer = DeckSerializer(decks, many=True)
         return Response(serialzer.data)
 
-# !!! Needs to check if user is is_valid an possibly that they're the one signed in. Should be simpler when auth is linked up
+# !!! Needs to check if user is is_valid and possibly that they're the one signed in. I also need to check that the cards are valid. Should be simpler when auth is linked up
     def post(self, request):
-        user = User.objects.get(pk=request.data['created_by'])
+        # !!! Consider changing for pk
+        user = User.objects.get(pk=request.data['created_by_pk'])
         serializer = DeckSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(created_by=user)
+            cards = [Card.objects.get(pk=pk) for pk in request.data['card_pks']]
+            serializer.save(created_by=user, cards=cards)
             return Response(serializer.data, status=201)
 
         return Response(serializer.errors, status=422)

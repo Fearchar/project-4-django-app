@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DeckPanel = ({ deck, saveDeck }) => {
+const DeckPanel = ({ deckCards, saveDeck }) => {
   return (
     <div className="container">
       <br />
@@ -16,10 +16,10 @@ const DeckPanel = ({ deck, saveDeck }) => {
           >Save</button>
           <button className="button is-half">Delete</button>
         </div>
-        <div className="cards-in-deck">
+        <div className="deck-cards">
 
           {
-            deck.map((card , i) =>
+            deckCards.map((card , i) =>
               <div
                 key={i}
                 className="panel-block"
