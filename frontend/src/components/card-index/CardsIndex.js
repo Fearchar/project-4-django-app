@@ -13,10 +13,16 @@ class CardsIndex extends React.Component {
       cards: [],
       deckPanelOpen: true,
       deckCards: [],
-      deckName: '? Test Deck ?'
+      deckName: null
     }
+    this.storeDeckName = this.storeDeckName.bind(this)
     this.addCardToDeck = this.addCardToDeck.bind(this)
     this.saveDeck = this.saveDeck.bind(this)
+  }
+
+  storeDeckName(e) {
+    console.log('handelDeckNameChange')
+    this.setState({ deckName: e.target.value })
   }
 
   addCardToDeck(card) {
@@ -50,9 +56,9 @@ class CardsIndex extends React.Component {
   render() {
     if (!this.state.cards[1]) return <h1>Loading...</h1>
     return (
-      <div className="container">
-        <div className="columns">
-          <div className={`column ${!this.state.deckPanelOpen ? 'is-11' : 'is-9'}`}>
+      <div className="columns">
+        <div className={`column ${!this.state.deckPanelOpen ? 'is-11' : 'is-8'}`}>
+          <div className="section">
             <FilterBar />
             <PaginationBar />
             <CardColumns
@@ -61,12 +67,13 @@ class CardsIndex extends React.Component {
             />
             <PaginationBar />
           </div>
-          <div className={`column ${!this.state.deckPanelOpen ? 'is-1' : 'is-4'}`}>
-            {this.state.deckPanelOpen ? <DeckPanel
-              deckCards={this.state.deckCards}
-              saveDeck={this.saveDeck}
-            /> : ''}
-          </div>
+        </div>
+        <div className={`column ${!this.state.deckPanelOpen ? 'is-1' : 'is-4'}`}>
+          {this.state.deckPanelOpen ? <DeckPanel
+            deckCards={this.state.deckCards}
+            storeDeckName={this.storeDeckName}
+            saveDeck={this.saveDeck}
+          /> : ''}
         </div>
       </div>
     )

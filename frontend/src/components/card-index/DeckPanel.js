@@ -1,13 +1,18 @@
 import React from 'react'
 
-const DeckPanel = ({ deckCards, saveDeck }) => {
+const DeckPanel = ({ deckCards, storeDeckName, saveDeck }) => {
   return (
     <div className="container">
       <br />
       <nav className="panels">
-        <p className="panel-heading">
-          Deck Builder / Deck Name
-        </p>
+        <div className="panel-heading">
+          <input
+            className="input"
+            name="deckName"
+            placeholder="Enter deck name"
+            onChange={storeDeckName}
+          />
+        </div>
         <div className="panel-block">
           <button className="button is-half">Restart</button>
           <button
