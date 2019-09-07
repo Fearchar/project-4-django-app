@@ -43,6 +43,7 @@ class DeckList(APIView):
         serialzer = DeckSerializer(decks, many=True)
         return Response(serialzer.data)
 
+# !!! Needs to check if user is is_valid an possibly that they're the one signed in. Should be simpler when auth is linked up
     def post(self, request):
         user = User.objects.get(pk=request.data['created_by'])
         serializer = DeckSerializer(data=request.data)

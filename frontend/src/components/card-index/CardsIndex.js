@@ -29,10 +29,9 @@ class CardsIndex extends React.Component {
 
   saveDeck() {
     const deck = {
-      name: 'Test',
-      created_by: 1,
-      win_rate: null,
-      cards: this.state.deck
+      name: 'Test ???',
+      created_by: 4,
+      win_rate: null
     }
     axios.post('/api/decks/', deck)
       .then(res => console.log(res.data))
