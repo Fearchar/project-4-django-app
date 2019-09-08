@@ -25,6 +25,17 @@ class CardList(APIView):
     def get(self, request):
         page_size = 8
         cards = Card.objects.all()
+        # !!! Needs to send some kind of response if send a querystring key tht doesn't exist on the model. It would also be better if it would search the model for it, because we're not really doing anyting with those properties on the front end
+        for key in request.query_params:
+            if key != 'cmc' and key in CardSerializer.Meta.fields:
+                cards = cards.filter(
+                    **{key + '__contains': request.query_params.get(key)}
+                )
+            elif key == 'cmc':
+                cards = cards.filter(cmc=request.query_params.get(key))
+
+        # if request.query_params.get('page') == 0:
+        #     cards = cards.filter(manaCost__contains='{R}')
         page_count = math.floor(cards.count() / page_size)
         page_index = int(request.query_params.get('page'))
         if page_index > page_count:

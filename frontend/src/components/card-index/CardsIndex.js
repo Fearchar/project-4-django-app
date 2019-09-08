@@ -12,6 +12,14 @@ class CardsIndex extends React.Component {
     this.state = {
       totalPages: null,
       cards: null,
+      cardFilters: {
+        name: null,
+        text: null,
+        set: null,
+        manaCost: '%7BR%7D',
+        cmc: null,
+        rarity: null
+      },
       deckPanelOpen: true,
       deckCards: [],
       deckName: null
@@ -65,15 +73,20 @@ class CardsIndex extends React.Component {
       win_rate: null,
       card_pks: cardIds
     }
-    axios.post('/api/decks/', deckRequest)
+    axios.post('/api/decks', deckRequest)
       // !!! I need to do something with this response to tell the user the save was successful
       .then(res => console.log(res.data))
       // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
-  getCardPage(num) {
-    num = parseInt(num)
-    axios.get(`/api/cards?page=${num}`)
+  getCardPage(numString) {
+    let queryString = `?page=${parseInt(numString)}`
+    const cardFilters = this.state.cardFilters
+    for (const key in cardFilters) {
+      if (cardFilters[key]) queryString += `&${key}=${cardFilters[key]}`
+    }
+    console.log(queryString)
+    axios.get(`/api/cards${queryString}`)
       // !!! Could send user to a 404 site if they have errors. Even if it's just a h tag.
       .then(res => this.setState({cards: res.data, totalPages: parseInt(res.headers['total-pages'])}))
   }

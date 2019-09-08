@@ -22,7 +22,7 @@ const PaginationBar = ({ cardPageIndex, totalPages, changePage }) => {
         <li><a
           className="pagination-link" aria-label={`Goto page ${totalPages+1}`}
           onClick={() => changePage(totalPages)}
-        >{totalPages+1}</a></li>
+        >{totalPages ? totalPages+1 : '  '}</a></li>
       </ul>
     </nav>
   )
