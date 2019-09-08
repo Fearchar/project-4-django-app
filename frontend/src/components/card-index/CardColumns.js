@@ -1,6 +1,7 @@
 import React from 'react'
 
 const CardColumns = ({ cards, addCardToDeck}) => {
+  if (!cards) return <h1>Loading...</h1>
   return (
     <div className="columns is-multiline">
       {cards.map(card =>

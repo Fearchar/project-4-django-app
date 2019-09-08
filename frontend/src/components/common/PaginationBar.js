@@ -1,17 +1,15 @@
 import React from 'react'
 
-const PaginationBar = ({ cardPage, totalPages, changePage }) => {
-  const activePage = cardPage % 3
-
+const PaginationBar = ({ cardPageIndex, totalPages, changePage }) => {
   return (
     <nav className="pagination is-centered" role="navigation" aria-label="pagination">
       <a
         className="pagination-previous"
-        onClick={() => changePage(cardPage-1)}
+        onClick={() => changePage(cardPageIndex-1)}
       >&lsaquo;</a>
       <a
         className="pagination-next"
-        onClick={() => changePage(cardPage+1)}
+        onClick={() => changePage(cardPageIndex+1)}
       >&rsaquo;</a>
       <ul className="pagination-list">
         <li><a
@@ -19,10 +17,10 @@ const PaginationBar = ({ cardPage, totalPages, changePage }) => {
           onClick={() => changePage(0)}
         >1</a></li>
         <li><span className="pagination-ellipsis">&hellip;</span></li>
-        <li><a className="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+        <li><a className="pagination-link is-current" aria-label={`Goto page ${cardPageIndex+1}`} aria-current="page">{cardPageIndex+1}</a></li>
         <li><span className="pagination-ellipsis">&hellip;</span></li>
         <li><a
-          className="pagination-link" aria-label="Goto page 86"
+          className="pagination-link" aria-label={`Goto page ${totalPages+1}`}
           onClick={() => changePage(totalPages)}
         >{totalPages+1}</a></li>
       </ul>

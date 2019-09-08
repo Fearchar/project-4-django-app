@@ -10,10 +10,8 @@ class CardsIndex extends React.Component {
   constructor() {
     super()
     this.state = {
-      cardPageIndex: 0,
-      prevCardPageIndex: 0,
       totalPages: null,
-      cards: [],
+      cards: null,
       deckPanelOpen: true,
       deckCards: [],
       deckName: null
@@ -26,12 +24,10 @@ class CardsIndex extends React.Component {
 
   // !!! Consider changing so it doesn't set state if the number is the same. Check with Mike whether React checks if theres been a meaningful change.
   changePage(index){
-    if (index >= 0) this.setState({ cardPageIndex: index })
-    else this.setState({ cardPageIndex: 0 })
+    this.props.history.push(`/cards/${index}`)
   }
 
   storeDeckName(e) {
-    console.log('handelDeckNameChange')
     this.setState({ deckName: e.target.value })
   }
 
@@ -54,36 +50,37 @@ class CardsIndex extends React.Component {
       card_pks: cardIds
     }
     axios.post('/api/decks/', deckRequest)
+      // !!! I need to do something with this response to tell the user the save was successful
       .then(res => console.log(res.data))
       // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
   getCardPage(num) {
+    num = parseInt(num)
     axios.get(`/api/cards?page=${num}`)
       // !!! Could send user to a 404 site if they have errors. Even if it's just a h tag.
-      .then(res => this.setState({cards: res.data, cardPageIndex: num, prevCardPageIndex: num, totalPages: parseInt(res.headers['total-pages'])}))
+      .then(res => this.setState({cards: res.data, totalPages: parseInt(res.headers['total-pages'])}))
   }
 
   componentDidMount() {
-    this.getCardPage(this.state.cardPageIndex)
+    this.getCardPage(this.props.match.params.page)
   }
 
-  componentDidUpdate() {
-    if (this.state.cardPageIndex > this.state.prevCardPageIndex) {
-      this.getCardPage(this.state.cardPageIndex)
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.setState({ cards: null })
+      this.getCardPage(this.props.match.params.page)
     }
-    console.log(this.state.cardPageIndex, this.state.prevCardPageIndex)
   }
 
   render() {
-    if (!this.state.cards[1]) return <h1>Loading...</h1>
     return (
       <div className="columns">
         <div className={`column ${!this.state.deckPanelOpen ? 'is-11' : 'is-8'}`}>
           <div className="section">
             <FilterBar />
             <PaginationBar
-              cardPageIndex={this.state.cardPageIndex}
+              cardPageIndex={parseInt(this.props.match.params.page)}
               totalPages={this.state.totalPages}
               changePage={this.changePage}
             />
@@ -92,7 +89,7 @@ class CardsIndex extends React.Component {
               addCardToDeck={this.addCardToDeck}
             />
             <PaginationBar
-              cardPageIndex={this.state.cardPageIndex}
+              cardPageIndex={parseInt(this.props.match.params.page)}
               totalPages={this.state.totalPages}
               changePage={this.changePage}
             />
