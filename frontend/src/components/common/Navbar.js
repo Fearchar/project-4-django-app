@@ -53,7 +53,7 @@ class Navbar extends React.Component {
           <div className="navbar-start">
             <Link to="/" className="navbar-item">
               <div className="navbar-brand">
-                <div className="navbar-item title">Happening</div>
+                <div className="navbar-item title">Mana Curve</div>
               </div>
             </Link>
             <div className="navbar-item has-dropdown is-hoverable">

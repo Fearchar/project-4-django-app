@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FilterBar = ({ storeCardFilter }) => {
+const FilterBar = ({ storeCardFilters }) => {
   return (
     <div>
       <br />
@@ -11,7 +11,7 @@ const FilterBar = ({ storeCardFilter }) => {
             className="input is-small"
             name="name"
             placeholder="Enter card name"
-            onChange={storeCardFilter}
+            onChange={storeCardFilters}
           />
         </div>
         <div className="column is-one-third">
@@ -20,7 +20,7 @@ const FilterBar = ({ storeCardFilter }) => {
             className="input is-small"
             name="text"
             placeholder="Enter card text"
-            onChange={storeCardFilter}
+            onChange={storeCardFilters}
           />
         </div>
         <div className="column is-one-third">
@@ -29,7 +29,7 @@ const FilterBar = ({ storeCardFilter }) => {
             className="input is-small"
             name="set"
             placeholder="Enter set name"
-            onChange={storeCardFilter}
+            onChange={storeCardFilters}
           />
         </div>
         <div className="column is-one-third">
@@ -62,7 +62,8 @@ const FilterBar = ({ storeCardFilter }) => {
             type="number"
             name="cmc"
             placeholder="Enter cmc"
-            onChange={storeCardFilter}
+            min="0"
+            onChange={storeCardFilters}
           />
         </div>
         <div className="column is-one-third">
@@ -71,12 +72,11 @@ const FilterBar = ({ storeCardFilter }) => {
             className="input is-small"
             name="rarity"
             placeholder="Enter rarity"
-            onChange={storeCardFilter}
+            onChange={storeCardFilters}
           />
         </div>
         <button className="button is-small is-rounded is-link">Reset</button>
       </div>
-      <hr />
     </div>
   )
 }

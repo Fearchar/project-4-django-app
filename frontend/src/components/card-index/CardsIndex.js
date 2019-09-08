@@ -10,8 +10,9 @@ class CardsIndex extends React.Component {
   constructor() {
     super()
     this.state = {
-      totalPages: '',
-      cards: '',
+      cards: [],
+      pageSize: 8,
+      pageIndex: 0,
       cardFilters: {
         name: '',
         text: '',
@@ -24,28 +25,51 @@ class CardsIndex extends React.Component {
       deckCards: [],
       deckName: null
     }
-    this.storeDeckName = this.storeDeckName.bind(this)
+
     this.changePage = this.changePage.bind(this)
+    this.storeDeckName = this.storeDeckName.bind(this)
+    this.storeCardFilters = this.storeCardFilters.bind(this)
+    //!!! this.changePage = this.changePage.bind(this)
     this.addCardToDeck = this.addCardToDeck.bind(this)
     this.removeCardFromDeck = this.removeCardFromDeck.bind(this)
     this.saveDeck = this.saveDeck.bind(this)
-    this.storeCardFilter = this.storeCardFilter.bind(this)
   }
 
-  // !!! Consider changing so it doesn't set state if the number is the same. Check with Mike whether React checks if theres been a meaningful change.
-  changePage(index){
-    console.log(index, this.state.totalPages)
-    if (index > this.state.totalPages) {
-      this.props.history.push(`/cards/${this.state.totalPages}`)
-    } else if (index < 0) {
-      this.props.history.push(`/cards/${0}`)
-    } else {
-      this.props.history.push(`/cards/${index}`)
-    }
+  changePage(pageIndex){
+    const totalPages = Math.floor(this.state.cards.length / this.state.pageSize)
+    if (
+      pageIndex > totalPages ||
+      pageIndex < 0
+    ) return null
+    this.setState({ pageIndex })
   }
 
+  // !!! Turn the two below in to one function and change name to storeChange
   storeDeckName(e) {
     this.setState({ deckName: e.target.value })
+  }
+
+  storeCardFilters(e) {
+    let value = e.target.value
+    if (isNaN(+value)) value = value.toLowerCase()
+    else if (value) value = +value
+    const cardFilters = { ...this.state.cardFilters, [e.target.name]: value }
+    this.setState({ cardFilters })
+  }
+
+  // !!! Use lodash intersection to make this more efficient and to fix cmc behaviour
+  // !! make rarity a drop down and make it have to exactly equal result
+  filterCards() {
+    let cards = this.state.cards
+    const cardFilters = this.state.cardFilters
+    for (const key in cardFilters) {
+      if (cardFilters[key] !== '') cards = cards.filter(card => {
+        if (typeof cardFilters[key] === 'string') return card[key].toLowerCase().includes(cardFilters[key])
+        return card[key] === cardFilters[key]
+
+      })
+    }
+    return cards
   }
 
   addCardToDeck(card) {
@@ -74,32 +98,20 @@ class CardsIndex extends React.Component {
       win_rate: null,
       card_pks: cardIds
     }
-    axios.post('/api/decks', deckRequest)
+    axios.post('/api/decks/', deckRequest)
       // !!! I need to do something with this response to tell the user the save was successful
       .then(res => console.log(res.data))
       // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
-  storeCardFilter(e) {
-    const cardFilters = { ...this.state.cardFilters, [e.target.name]: e.target.value }
-    this.setState({ cardFilters })
-    this.getCardPage(0)
-    this.props.history.push('/cards/0')
-  }
-
-  getCardPage(numString) {
-    let queryString = `?page=${parseInt(numString)}`
-    const cardFilters = this.state.cardFilters
-    for (const key in cardFilters) {
-      if (cardFilters[key]) queryString += `&${key}=${cardFilters[key]}`
-    }
-    axios.get(`/api/cards${queryString}`)
-      // !!! Could send user to a 404 site if they have errors. Even if it's just a h tag.
-      .then(res => this.setState({cards: res.data, totalPages: parseInt(res.headers['total-pages'])}))
+  getCardPage() {
+    axios.get('/api/cards/')
+      // !!! Could result in a 404 page if they have errors. Even if it's just a h tag.
+      .then(res => this.setState({cards: res.data}))
   }
 
   componentDidMount() {
-    this.getCardPage(this.props.match.params.page)
+    this.getCardPage()
   }
 
   componentDidUpdate(prevProps) {
@@ -110,26 +122,30 @@ class CardsIndex extends React.Component {
   }
 
   render() {
-    console.log(this.state.cardFilters)
+    console.log('state:', this.state)
+    const totalPages = Math.floor(this.state.cards.length / this.state.pageSize)
+    // !!! Get rid of difference column sizes if you don't make deck panel pull out
     return (
       <div className="columns">
         <div className={`column ${!this.state.deckPanelOpen ? 'is-11' : 'is-8'}`}>
           <div className="section">
             <FilterBar
-              storeCardFilter={this.storeCardFilter}
+              storeCardFilters={this.storeCardFilters}
             />
             <PaginationBar
-              cardPageIndex={parseInt(this.props.match.params.page)}
-              totalPages={this.state.totalPages}
+              pageIndex={this.state.pageIndex}
+              totalPages={totalPages}
               changePage={this.changePage}
             />
             <CardColumns
-              cards={this.state.cards}
+              cards={this.filterCards(this.state.cards)}
+              pageIndex={this.state.pageIndex}
+              pageSize={this.state.pageSize}
               addCardToDeck={this.addCardToDeck}
             />
             <PaginationBar
-              cardPageIndex={parseInt(this.props.match.params.page)}
-              totalPages={this.state.totalPages}
+              pageIndex={this.state.pageIndex}
+              totalPages={totalPages}
               changePage={this.changePage}
             />
           </div>

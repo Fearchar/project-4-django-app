@@ -13,7 +13,7 @@ class App extends React.Component {
       <HashRouter>
         <Navbar />
         <Switch>
-          <Route path="/cards/:page" component={CardsIndex}/>
+          <Route path="/cards" component={CardsIndex}/>
         </Switch>
       </HashRouter>
     )
