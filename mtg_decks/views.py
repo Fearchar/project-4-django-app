@@ -1,3 +1,4 @@
+import math
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -21,12 +22,19 @@ class UserList(APIView):
 
 class CardList(APIView):
 
-    def get(self, _request, page):
+    def get(self, request):
         page_size = 8
-        first_card = page * page_size
-        cards = Card.objects.all()[first_card : first_card + page_size]
-        serialzer = CardSerializer(cards, many=True)
-        return Response(serialzer.data)
+        cards = Card.objects.all()
+        page_count = math.ceil(cards.count() / page_size)
+        page_index = int(request.query_params.get('page'))
+        if page_index > page_count:
+            return Response({'error': 'Requested page does not exist.'}, status=404)
+        if page_index is None:
+            page_index = 0
+        first_card_index = page_index * page_size
+
+        serializer = CardSerializer(cards[first_card_index : first_card_index + page_size], many=True)
+        return Response(serializer.data, headers={'Total-Pages': page_count})
 
     def post(self, request):
         serializer = CardSerializer(data=request.data)

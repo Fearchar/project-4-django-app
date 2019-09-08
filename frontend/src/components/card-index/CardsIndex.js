@@ -10,14 +10,24 @@ class CardsIndex extends React.Component {
   constructor() {
     super()
     this.state = {
+      cardPageIndex: 0,
+      prevCardPageIndex: 0,
+      totalPages: null,
       cards: [],
       deckPanelOpen: true,
       deckCards: [],
       deckName: null
     }
     this.storeDeckName = this.storeDeckName.bind(this)
+    this.changePage = this.changePage.bind(this)
     this.addCardToDeck = this.addCardToDeck.bind(this)
     this.saveDeck = this.saveDeck.bind(this)
+  }
+
+  // !!! Consider changing so it doesn't set state if the number is the same. Check with Mike whether React checks if theres been a meaningful change.
+  changePage(index){
+    if (index >= 0) this.setState({ cardPageIndex: index })
+    else this.setState({ cardPageIndex: 0 })
   }
 
   storeDeckName(e) {
@@ -48,9 +58,21 @@ class CardsIndex extends React.Component {
       // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
+  getCardPage(num) {
+    axios.get(`/api/cards?page=${num}`)
+      // !!! Could send user to a 404 site if they have errors. Even if it's just a h tag.
+      .then(res => this.setState({cards: res.data, cardPageIndex: num, prevCardPageIndex: num, totalPages: parseInt(res.headers['total-pages'])}))
+  }
+
   componentDidMount() {
-    axios.get('/api/cards/0')
-      .then(res => this.setState({cards: res.data}))
+    this.getCardPage(this.state.cardPageIndex)
+  }
+
+  componentDidUpdate() {
+    if (this.state.cardPageIndex > this.state.prevCardPageIndex) {
+      this.getCardPage(this.state.cardPageIndex)
+    }
+    console.log(this.state.cardPageIndex, this.state.prevCardPageIndex)
   }
 
   render() {
@@ -60,12 +82,20 @@ class CardsIndex extends React.Component {
         <div className={`column ${!this.state.deckPanelOpen ? 'is-11' : 'is-8'}`}>
           <div className="section">
             <FilterBar />
-            <PaginationBar />
+            <PaginationBar
+              cardPageIndex={this.state.cardPageIndex}
+              totalPages={this.state.totalPages}
+              changePage={this.changePage}
+            />
             <CardColumns
               cards={this.state.cards}
               addCardToDeck={this.addCardToDeck}
             />
-            <PaginationBar />
+            <PaginationBar
+              cardPageIndex={this.state.cardPageIndex}
+              totalPages={this.state.totalPages}
+              changePage={this.changePage}
+            />
           </div>
         </div>
         <div className={`column ${!this.state.deckPanelOpen ? 'is-1' : 'is-4'}`}>

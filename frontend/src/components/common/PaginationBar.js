@@ -1,26 +1,32 @@
 import React from 'react'
 
-const PaginationBar = () => {
+const PaginationBar = ({ cardPage, totalPages, changePage }) => {
+  const activePage = cardPage % 3
+
   return (
-    <div>
-      <div className="container columns is-multiline">
-        <div className="column is-1 has-text-centered">
-          <button className="button">LL</button>
-        </div>
-        <div className="column is-1 has-text-centered">
-          <button className="button">L</button>
-        </div>
-        <div className="column is-8 has-text-centered">
-          <button className="button">Other</button>
-        </div>
-        <div className="column is-1 has-text-centered">
-          <button className="button">R</button>
-        </div>
-        <div className="column is-1 has-text-centered">
-          <button className="button">RR</button>
-        </div>
-      </div>
-    </div>
+    <nav className="pagination is-centered" role="navigation" aria-label="pagination">
+      <a
+        className="pagination-previous"
+        onClick={() => changePage(cardPage-1)}
+      >&lsaquo;</a>
+      <a
+        className="pagination-next"
+        onClick={() => changePage(cardPage+1)}
+      >&rsaquo;</a>
+      <ul className="pagination-list">
+        <li><a
+          className="pagination-link" aria-label="Goto page 1"
+          onClick={() => changePage(0)}
+        >1</a></li>
+        <li><span className="pagination-ellipsis">&hellip;</span></li>
+        <li><a className="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+        <li><span className="pagination-ellipsis">&hellip;</span></li>
+        <li><a
+          className="pagination-link" aria-label="Goto page 86"
+          onClick={() => changePage(totalPages)}
+        >{totalPages+1}</a></li>
+      </ul>
+    </nav>
   )
 }
 
