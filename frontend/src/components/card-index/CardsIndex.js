@@ -19,6 +19,7 @@ class CardsIndex extends React.Component {
     this.storeDeckName = this.storeDeckName.bind(this)
     this.changePage = this.changePage.bind(this)
     this.addCardToDeck = this.addCardToDeck.bind(this)
+    this.removeCardFromDeck = this.removeCardFromDeck.bind(this)
     this.saveDeck = this.saveDeck.bind(this)
   }
 
@@ -40,10 +41,18 @@ class CardsIndex extends React.Component {
 
   addCardToDeck(card) {
     const deckCards = [...this.state.deckCards, card]
+    // !!! Change to sort by manaCost
     deckCards.sort((a, b) => {
       if (a.name < b.name) return -1
       if (b.name < a.name) return 1
     })
+    this.setState({ deckCards })
+  }
+
+  removeCardFromDeck(card) {
+    const cardIndex = this.state.deckCards.findIndex(item => item.id === card.id)
+    const deckCards = this.state.deckCards
+    deckCards.splice(cardIndex, 1)
     this.setState({ deckCards })
   }
 
@@ -106,6 +115,7 @@ class CardsIndex extends React.Component {
           {this.state.deckPanelOpen ? <DeckPanel
             deckCards={this.state.deckCards}
             storeDeckName={this.storeDeckName}
+            removeCardFromDeck={this.removeCardFromDeck}
             saveDeck={this.saveDeck}
           /> : ''}
         </div>
