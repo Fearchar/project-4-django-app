@@ -10,15 +10,15 @@ class CardsIndex extends React.Component {
   constructor() {
     super()
     this.state = {
-      totalPages: null,
-      cards: null,
+      totalPages: '',
+      cards: '',
       cardFilters: {
-        name: null,
-        text: null,
-        set: null,
-        manaCost: 'R',
-        cmc: null,
-        rarity: null
+        name: '',
+        text: '',
+        set: '',
+        manaCost: '',
+        cmc: '',
+        rarity: ''
       },
       deckPanelOpen: true,
       deckCards: [],
@@ -29,6 +29,7 @@ class CardsIndex extends React.Component {
     this.addCardToDeck = this.addCardToDeck.bind(this)
     this.removeCardFromDeck = this.removeCardFromDeck.bind(this)
     this.saveDeck = this.saveDeck.bind(this)
+    this.storeCardFilter = this.storeCardFilter.bind(this)
   }
 
   // !!! Consider changing so it doesn't set state if the number is the same. Check with Mike whether React checks if theres been a meaningful change.
@@ -79,13 +80,19 @@ class CardsIndex extends React.Component {
       // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
+  storeCardFilter(e) {
+    const cardFilters = { ...this.state.cardFilters, [e.target.name]: e.target.value }
+    this.setState({ cardFilters })
+    this.getCardPage(0)
+    this.props.history.push('/cards/0')
+  }
+
   getCardPage(numString) {
     let queryString = `?page=${parseInt(numString)}`
     const cardFilters = this.state.cardFilters
     for (const key in cardFilters) {
       if (cardFilters[key]) queryString += `&${key}=${cardFilters[key]}`
     }
-    console.log(queryString)
     axios.get(`/api/cards${queryString}`)
       // !!! Could send user to a 404 site if they have errors. Even if it's just a h tag.
       .then(res => this.setState({cards: res.data, totalPages: parseInt(res.headers['total-pages'])}))
@@ -103,11 +110,14 @@ class CardsIndex extends React.Component {
   }
 
   render() {
+    console.log(this.state.cardFilters)
     return (
       <div className="columns">
         <div className={`column ${!this.state.deckPanelOpen ? 'is-11' : 'is-8'}`}>
           <div className="section">
-            <FilterBar />
+            <FilterBar
+              storeCardFilter={this.storeCardFilter}
+            />
             <PaginationBar
               cardPageIndex={parseInt(this.props.match.params.page)}
               totalPages={this.state.totalPages}

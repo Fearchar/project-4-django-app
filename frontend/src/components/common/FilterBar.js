@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FilterBar = () => {
+const FilterBar = ({ storeCardFilter }) => {
   return (
     <div>
       <br />
@@ -11,6 +11,7 @@ const FilterBar = () => {
             className="input is-small"
             name="name"
             placeholder="Enter card name"
+            onChange={storeCardFilter}
           />
         </div>
         <div className="column is-one-third">
@@ -19,6 +20,7 @@ const FilterBar = () => {
             className="input is-small"
             name="text"
             placeholder="Enter card text"
+            onChange={storeCardFilter}
           />
         </div>
         <div className="column is-one-third">
@@ -27,6 +29,7 @@ const FilterBar = () => {
             className="input is-small"
             name="set"
             placeholder="Enter set name"
+            onChange={storeCardFilter}
           />
         </div>
         <div className="column is-one-third">
@@ -59,6 +62,7 @@ const FilterBar = () => {
             type="number"
             name="cmc"
             placeholder="Enter cmc"
+            onChange={storeCardFilter}
           />
         </div>
         <div className="column is-one-third">
@@ -67,6 +71,7 @@ const FilterBar = () => {
             className="input is-small"
             name="rarity"
             placeholder="Enter rarity"
+            onChange={storeCardFilter}
           />
         </div>
         <button className="button is-small is-rounded is-link">Reset</button>
