@@ -25,7 +25,7 @@ class CardList(APIView):
     def get(self, request):
         page_size = 8
         cards = Card.objects.all()
-        page_count = math.ceil(cards.count() / page_size)
+        page_count = math.floor(cards.count() / page_size)
         page_index = int(request.query_params.get('page'))
         if page_index > page_count:
             return Response({'error': 'Requested page does not exist.'}, status=404)

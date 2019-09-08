@@ -24,7 +24,14 @@ class CardsIndex extends React.Component {
 
   // !!! Consider changing so it doesn't set state if the number is the same. Check with Mike whether React checks if theres been a meaningful change.
   changePage(index){
-    this.props.history.push(`/cards/${index}`)
+    console.log(index, this.state.totalPages)
+    if (index > this.state.totalPages) {
+      this.props.history.push(`/cards/${this.state.totalPages}`)
+    } else if (index < 0) {
+      this.props.history.push(`/cards/${0}`)
+    } else {
+      this.props.history.push(`/cards/${index}`)
+    }
   }
 
   storeDeckName(e) {
