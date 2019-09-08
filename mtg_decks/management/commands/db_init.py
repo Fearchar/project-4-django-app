@@ -19,7 +19,9 @@ class Command(BaseCommand):
                     print('No ImageUrl:', card['name'])
                 card = {
                     'name': card['name'],
-                    'manaCost': '' if not 'manaCost' in card else card['manaCost'],
+                    'manaCost': '' if not 'manaCost' in card else ''.join(
+                        [char for char in card['manaCost'] if char not in ('{', '}')]
+                    ),
                     'cmc': card['cmc'],
                     'type': card['type'],
                     'rarity': card['rarity'],
@@ -27,6 +29,7 @@ class Command(BaseCommand):
                     'text': '' if not 'text' in card else card['text'],
                     'imageUrl': '' if not 'imageUrl' in card else card['imageUrl']
                 }
+
                 serialzer = CardSerializer(data=card)
                 if serialzer.is_valid():
                     serialzer.save()

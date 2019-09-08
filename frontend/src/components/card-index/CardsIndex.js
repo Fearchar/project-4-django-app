@@ -16,7 +16,7 @@ class CardsIndex extends React.Component {
         name: null,
         text: null,
         set: null,
-        manaCost: '%7BR%7D',
+        manaCost: 'R',
         cmc: null,
         rarity: null
       },
@@ -69,7 +69,7 @@ class CardsIndex extends React.Component {
     const deckRequest = {
       name: this.state.deckName,
       // !!! Need to change this to pk here and on the backend, once you have auth up and running
-      created_by_pk: 'Test',
+      created_by_pk: 'admin',
       win_rate: null,
       card_pks: cardIds
     }
