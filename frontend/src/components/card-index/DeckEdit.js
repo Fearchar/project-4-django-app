@@ -125,8 +125,11 @@ class DeckEdit extends React.Component {
       win_rate: deck.win_rate,
       cards: cardIds
     }
-    axios.put('/api/decks/', deckData)
-      .then(res => this.setState({ deck: res.data}))
+    axios.put(`/api/decks/${this.props.match.params.id}`, deckData)
+      .then(res => {
+        console.log(res.data)
+        this.setState({ deck: res.data })
+      })
       // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
   //

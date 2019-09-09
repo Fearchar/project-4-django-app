@@ -26,6 +26,7 @@ class ReadDeckSerializer(serializers.ModelSerializer):
 
 class WriteDeckSerializer(serializers.ModelSerializer):
 
+
     class Meta:
         model = Deck
         fields = ('id', 'name', 'win_rate', 'cards')
@@ -33,6 +34,23 @@ class WriteDeckSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         cards = validated_data.pop('cards')
         deck = Deck.objects.create(**validated_data)
+
+        sql = 'INSERT INTO mtg_decks_deck_cards (deck_id, card_id) VALUES '
+
+        sql += ','.join([f'({deck.id}, {card.id})' for card in cards])
+
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
+
+        return deck
+
+    def update(self, deck, validated_data):
+        cards = validated_data.pop('cards')
+        deck.name = validated_data.get('name', deck.name)
+        deck.win_rate = validated_data.get('win_rate', deck.win_rate)
+
+        for card in Card.objects.filter(decks=deck):
+            deck.cards.remove(card)
 
         sql = 'INSERT INTO mtg_decks_deck_cards (deck_id, card_id) VALUES '
 
