@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FilterBar = ({ storeCardFilters }) => {
+const FilterBar = ({ cardFilters, storeCardFilters, resetFilters }) => {
   return (
     <div>
       <br />
@@ -10,6 +10,7 @@ const FilterBar = ({ storeCardFilters }) => {
           <input
             className="input is-small"
             name="name"
+            value={cardFilters.name}
             placeholder="Enter card name"
             onChange={storeCardFilters}
           />
@@ -19,6 +20,7 @@ const FilterBar = ({ storeCardFilters }) => {
           <input
             className="input is-small"
             name="text"
+            value={cardFilters.text}
             placeholder="Enter card text"
             onChange={storeCardFilters}
           />
@@ -28,6 +30,7 @@ const FilterBar = ({ storeCardFilters }) => {
           <input
             className="input is-small"
             name="set"
+            value={cardFilters.set}
             placeholder="Enter set name"
             onChange={storeCardFilters}
           />
@@ -91,6 +94,7 @@ const FilterBar = ({ storeCardFilters }) => {
             className="input is-small"
             type="number"
             name="cmc"
+            value={cardFilters.cmc}
             placeholder="Enter cmc"
             min="0"
             onChange={storeCardFilters}
@@ -105,7 +109,10 @@ const FilterBar = ({ storeCardFilters }) => {
             onChange={storeCardFilters}
           />
         </div>
-        <button className="button is-small is-rounded is-link">Reset</button>
+        <button
+          className="button is-small is-rounded is-link"
+          onClick={resetFilters}
+        >Reset</button>
       </div>
     </div>
   )

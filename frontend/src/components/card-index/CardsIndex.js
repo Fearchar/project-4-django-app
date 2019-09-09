@@ -29,7 +29,7 @@ class CardsIndex extends React.Component {
     this.changePage = this.changePage.bind(this)
     this.storeDeckName = this.storeDeckName.bind(this)
     this.storeCardFilters = this.storeCardFilters.bind(this)
-    //!!! this.changePage = this.changePage.bind(this)
+    this.resetFilters = this.resetFilters.bind(this)
     this.addCardToDeck = this.addCardToDeck.bind(this)
     this.removeCardFromDeck = this.removeCardFromDeck.bind(this)
     this.saveDeck = this.saveDeck.bind(this)
@@ -73,6 +73,18 @@ class CardsIndex extends React.Component {
       })
     }
     return cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+  }
+
+  resetFilters() {
+    const cardFilters = {
+      name: '',
+      text: '',
+      set: '',
+      manaCost: '',
+      cmc: '',
+      rarity: ''
+    }
+    this.setState({ cardFilters })
   }
 
   addCardToDeck(card) {
@@ -134,7 +146,9 @@ class CardsIndex extends React.Component {
         <div className={`column ${!this.state.deckPanelOpen ? 'is-11' : 'is-8'}`}>
           <div className="section">
             <FilterBar
+              cardFilters={this.state.cardFilters}
               storeCardFilters={this.storeCardFilters}
+              resetFilters={this.resetFilters}
             />
             <PaginationBar
               pageIndex={this.state.pageIndex}
