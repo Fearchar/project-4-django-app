@@ -36,22 +36,52 @@ const FilterBar = ({ storeCardFilters }) => {
           <label>Filter by card colour</label>
           <div className="columns is-mobile">
             <div className="column is-2">
-              <button className="button is-small is-rounded is-danger"></button>
+              <button
+                className="button is-small is-rounded is-danger"
+                name="manaCost"
+                value="R"
+                onClick={storeCardFilters}
+              ></button>
             </div>
             <div className="column is-2">
-              <button className="button is-small is-rounded is-info"></button>
+              <button
+                className="button is-small is-rounded is-info"
+                name="manaCost"
+                value="U"
+                onClick={storeCardFilters}
+              ></button>
             </div>
             <div className="column is-2">
-              <button className="button is-small is-rounded is-primary"></button>
+              <button
+                className="button is-small is-rounded is-primary"
+                name="manaCost"
+                value="G"
+                onClick={storeCardFilters}
+              ></button>
             </div>
             <div className="column is-2">
-              <button className="button is-small is-rounded is-dark"></button>
+              <button
+                className="button is-small is-rounded is-dark"
+                name="manaCost"
+                value="B"
+                onClick={storeCardFilters}
+              ></button>
             </div>
             <div className="column is-2">
-              <button className="button is-small is-rounded"></button>
+              <button
+                className="button is-small is-rounded"
+                name="manaCost"
+                value="W"
+                onClick={storeCardFilters}
+              ></button>
             </div>
             <div className="column is-2">
-              <button className="button is-small is-rounded is-light"></button>
+              <button
+                className="button is-small is-rounded is-light"
+                name="manaCost"
+                value="none"
+                onClick={storeCardFilters}
+              ></button>
             </div>
           </div>
         </div>

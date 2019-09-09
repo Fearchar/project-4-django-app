@@ -35,8 +35,7 @@ class CardsIndex extends React.Component {
     this.saveDeck = this.saveDeck.bind(this)
   }
 
-  changePage(pageIndex){
-    const totalPages = Math.floor(this.state.cards.length / this.state.pageSize)
+  changePage(pageIndex, totalPages) {
     if (
       pageIndex > totalPages ||
       pageIndex < 0
@@ -64,12 +63,16 @@ class CardsIndex extends React.Component {
     const cardFilters = this.state.cardFilters
     for (const key in cardFilters) {
       if (cardFilters[key] !== '') cards = cards.filter(card => {
-        if (typeof cardFilters[key] === 'string') return card[key].toLowerCase().includes(cardFilters[key])
-        return card[key] === cardFilters[key]
+        const filterValue = cardFilters[key]
+        const cardValue = card[key]
+        if (key === 'manaCost' && filterValue === 'none') {
+          return !/[WUBRG]/.test(cardValue)
+        } else if (typeof filterValue === 'string') return cardValue.toLowerCase().includes(filterValue)
+        return cardValue === filterValue
 
       })
     }
-    return cards
+    return cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
   }
 
   addCardToDeck(card) {
@@ -123,7 +126,8 @@ class CardsIndex extends React.Component {
 
   render() {
     console.log('state:', this.state)
-    const totalPages = Math.floor(this.state.cards.length / this.state.pageSize)
+    const cards = this.filterCards(cards)
+    const totalPages = Math.floor((cards.length - 1) / this.state.pageSize)
     // !!! Get rid of difference column sizes if you don't make deck panel pull out
     return (
       <div className="columns">
@@ -138,7 +142,7 @@ class CardsIndex extends React.Component {
               changePage={this.changePage}
             />
             <CardColumns
-              cards={this.filterCards(this.state.cards)}
+              cards={cards}
               pageIndex={this.state.pageIndex}
               pageSize={this.state.pageSize}
               addCardToDeck={this.addCardToDeck}

@@ -22,9 +22,9 @@ const DeckPanel = ({ deckCards, storeDeckName, removeCardFromDeck, saveDeck }) =
           <button className="button is-half">Delete</button>
         </div>
         <div className="deck-cards">
-          {deckCards.map(card =>
+          {deckCards.map((card, i) =>
             <div
-              key={card.id}
+              key={i}
               className="panel-block"
               onClick={() => removeCardFromDeck(card)}
             >
