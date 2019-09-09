@@ -6,7 +6,7 @@ import FilterBar from '../common/FilterBar'
 import PaginationBar from '../common/PaginationBar'
 import CardColumns from './CardColumns'
 
-class CardsIndex extends React.Component {
+class DeckNew extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -126,7 +126,10 @@ class CardsIndex extends React.Component {
       cards: cardIds
     }
     axios.post('/api/decks/', deckData)
-      .then(res => this.setState({ deck: res.data}))
+      .then(res => {
+        const deck = res.data
+        this.props.history.push(`/decks/edit/${deck.id}`)
+      })
       // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
   //
@@ -134,26 +137,14 @@ class CardsIndex extends React.Component {
   //
   // }
 
-  getCardPage() {
+  getCards() {
     axios.get('/api/cards/')
       // !!! Could result in a 404 page if they have errors. Even if it's just a h tag.
       .then(res => this.setState({cards: res.data}))
   }
-  // This needs to be split into two pages
-  startPage() {
-    this.getCardPage()
-    console.log()
-    if (this.props.match.path.includes('edit')) {
-      this.setState({ mode: 'edit' })
-      axios.get(`/api/decks/${this.props.match.params.id}`)
-        .then(res => this.setState({ deck: res.data }))
-    } else {
-      this.setState({ mode: 'new', deck: {} })
-    }
-  }
 
   componentDidMount() {
-    this.startPage()
+    this.getCards()
   }
 
   componentDidUpdate(prevProps) {
@@ -197,7 +188,6 @@ class CardsIndex extends React.Component {
         </div>
         <div className={`column ${!this.state.deckPanelOpen ? 'is-1' : 'is-4'}`}>
           {this.state.deckPanelOpen ? <DeckPanel
-            mode={this.state.mode}
             deck={this.state.deck}
             storeDeckName={this.storeDeckName}
             removeCardFromDeck={this.removeCardFromDeck}
@@ -207,7 +197,6 @@ class CardsIndex extends React.Component {
       </div>
     )
   }
-
 }
 
-export default CardsIndex
+export default DeckNew

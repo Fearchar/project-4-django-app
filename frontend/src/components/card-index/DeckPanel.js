@@ -8,18 +8,18 @@ const DeckPanel = ({ deck, storeDeckName, removeCardFromDeck, saveDeck }) => {
       <nav className="panels">
         <div className="panel-heading">
           <input
-            className="input"
+            className="input is-medium has-text-weight-medium"
             name="deckName"
-            placeholder="Enter deck name"
+            value={deck.name}
             onChange={storeDeckName}
           />
         </div>
         <div className="panel-block">
           <button
-            className="button is-half"
+            className="button"
             onClick={saveDeck}
           >Save</button>
-          <button className="button is-half">Delete</button>
+          <button className="button">Delete</button>
         </div>
         {
           deck.saveMessage &&
@@ -39,7 +39,6 @@ const DeckPanel = ({ deck, storeDeckName, removeCardFromDeck, saveDeck }) => {
           )}
         </div>
       </nav>
-
     </div>
   )
 }

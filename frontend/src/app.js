@@ -5,7 +5,8 @@ import 'bulma'
 import './style.scss'
 
 import Navbar from './components/common/NavBar'
-import CardsIndex from './components/card-index/CardsIndex'
+import DeckNew from './components/card-index/DeckNew'
+import DeckEdit from './components/card-index/DeckEdit'
 
 class App extends React.Component {
   render() {
@@ -13,7 +14,8 @@ class App extends React.Component {
       <HashRouter>
         <Navbar />
         <Switch>
-          <Route path="/cards" component={CardsIndex}/>
+          <Route path="/decks/new" component={DeckNew}/>
+          <Route path="/decks/edit/:id" component={DeckEdit}/>
         </Switch>
       </HashRouter>
     )

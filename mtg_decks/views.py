@@ -71,6 +71,12 @@ class DeckDetail(APIView):
             raise Http404
         return deck
 
+    def get(self, _request, pk):
+        deck = self.get_deck(pk)
+        serializer = ReadDeckSerializer(deck)
+        return Response(serializer.data)
+
+
     def put(self, request, pk):
         user = User.objects.get(username=request.data['created_by_pk'])
         deck = self.get_deck(pk)
