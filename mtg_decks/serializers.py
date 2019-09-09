@@ -14,6 +14,7 @@ class CardSerializer(serializers.ModelSerializer):
         # !!! At the moment most of these fields are just being used to search, which we're expecting to do on the backend. Consider removing all but imageUrl
         fields = ('id', 'name', 'manaCost', 'cmc', 'type', 'rarity', 'set', 'text', 'imageUrl')
 
+
 class DeckSerializer(serializers.ModelSerializer):
     created_by = UsernameSerializer(read_only=True)
     cards = CardSerializer(many=True, read_only=True)

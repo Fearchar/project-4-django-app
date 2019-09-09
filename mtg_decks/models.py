@@ -25,10 +25,11 @@ class Deck(models.Model):
     created_by = models.ForeignKey(User, null=True, related_name='decks_created', on_delete=models.SET_NULL)
     users = models.ManyToManyField(User, related_name='decks_played')
 
-    unique_together = [['name', 'created_by']]
+    unique_together = ['name', 'created_by']
 
     def __str__(self):
         return f'{self.name} ({self.created_by})'
+
 
 class Game(models.Model):
     created_by = models.ForeignKey(User, null=True, related_name='games_created', on_delete=models.SET_NULL)
