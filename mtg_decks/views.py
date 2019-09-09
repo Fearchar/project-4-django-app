@@ -1,9 +1,16 @@
-import math
+import datetime
+from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import User, Card, Deck, Game
 from .serializers import UserSerializer, CardSerializer, DeckSerializer, GameSerializer
+
+# !!! Saved at should be on the model, rather than tacked on on the way out
+def addSavedMessage(data):
+    saved_at = datetime.datetime.now()
+    data = {**data, 'saveMessage': f'Deck saved at {saved_at.day}/{saved_at.month}/{saved_at.year} {saved_at.hour}:{saved_at.minute}'}
+    return data
 
 class UserList(APIView):
 
@@ -50,9 +57,36 @@ class DeckList(APIView):
         if serializer.is_valid():
             cards = [Card.objects.get(pk=pk) for pk in request.data['card_pks']]
             serializer.save(created_by=user, cards=cards)
-            return Response(serializer.data, status=201)
+            data = addSavedMessage(serializer.data)
+            return Response(data, status=201)
 
         return Response(serializer.errors, status=422)
+
+class DeckDetail(APIView):
+
+    def get_deck(self, pk):
+        try:
+            deck = Deck.objects.get(pk=pk)
+        except Deck.DoesNotExist:
+            raise Http404
+        return deck
+
+    def put(self, request, pk):
+        user = User.objects.get(username=request.data['created_by_pk'])
+        deck = self.get_deck(pk)
+        serializer = DeckSerializer(deck, data=request.data)
+        if serializer.is_valid():
+            cards = [Card.objects.get(pk=pk) for pk in request.data['card_pks']]
+            serializer.save(created_by=user, cards=cards)
+            data = addSavedMessage(serializer.data)
+            return Response(data, status=201)
+
+        return Response(serializer.errors, status=422)
+
+    def delete(self, _request, pk):
+        movie = self.get_deck(pk)
+        movie.delete()
+        return Response(status=204)
 
 class GameList(APIView):
 

@@ -22,8 +22,13 @@ class CardsIndex extends React.Component {
         rarity: ''
       },
       deckPanelOpen: true,
-      deckCards: [],
-      deckName: null
+      deck: {
+        id: null,
+        saveMessage: '',
+        name: '',
+        win_rate: null,
+        cards: []
+      }
     }
 
     this.changePage = this.changePage.bind(this)
@@ -45,7 +50,9 @@ class CardsIndex extends React.Component {
 
   // !!! Turn the two below in to one function and change name to storeChange
   storeDeckName(e) {
-    this.setState({ deckName: e.target.value })
+    const deck = { ...this.state.deck, name: e.target.value }
+    console.log(e.target.value, deck)
+    this.setState({ deck })
   }
 
   storeCardFilters(e) {
@@ -88,36 +95,49 @@ class CardsIndex extends React.Component {
   }
 
   addCardToDeck(card) {
-    const deckCards = [...this.state.deckCards, card]
+    const deckCards = [...this.state.deck.cards, card]
     // !!! Change to sort by manaCost
     deckCards.sort((a, b) => {
       if (a.name < b.name) return -1
       if (b.name < a.name) return 1
     })
-    this.setState({ deckCards })
+    const deck = { ...this.state.deck, cards: deckCards }
+    console.log('deck in add:', deck)
+    this.setState({ deck })
   }
 
   removeCardFromDeck(card) {
-    const cardIndex = this.state.deckCards.findIndex(item => item.id === card.id)
-    const deckCards = this.state.deckCards
+    const cardIndex = this.state.deck.cards.findIndex(item => item.id === card.id)
+    const deckCards = this.state.deck.cards
     deckCards.splice(cardIndex, 1)
-    this.setState({ deckCards })
+    const deck = { ...this.state.deck, cards: deckCards}
+    this.setState({ deck })
   }
 
   saveDeck() {
-    const cardIds = this.state.deckCards.map(card => card.id)
-    const deckRequest = {
-      name: this.state.deckName,
+    const deck = this.state.deck
+    const cardIds = deck.cards.map(card => card.id)
+    const deckData = {
+      name: deck.name,
       // !!! Need to change this to pk here and on the backend, once you have auth up and running
       created_by_pk: 'admin',
-      win_rate: null,
+      win_rate: deck.win_rate,
       card_pks: cardIds
     }
-    axios.post('/api/decks/', deckRequest)
-      // !!! I need to do something with this response to tell the user the save was successful
-      .then(res => console.log(res.data))
-      // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
+    if (!deck.id) {
+      axios.post('/api/decks/', deckData)
+        .then(res => this.setState({ deck: res.data}))
+        // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
+    } else {
+      axios.put(`/api/decks/${deck.id}`, deckData)
+        .then(res => this.setState({ deck: res.data}))
+        // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
+    }
   }
+  //
+  // deleteDeck() {
+  //
+  // }
 
   getCardPage() {
     axios.get('/api/cards/')
@@ -170,7 +190,7 @@ class CardsIndex extends React.Component {
         </div>
         <div className={`column ${!this.state.deckPanelOpen ? 'is-1' : 'is-4'}`}>
           {this.state.deckPanelOpen ? <DeckPanel
-            deckCards={this.state.deckCards}
+            deck={this.state.deck}
             storeDeckName={this.storeDeckName}
             removeCardFromDeck={this.removeCardFromDeck}
             saveDeck={this.saveDeck}
