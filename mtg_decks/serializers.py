@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from django.db import connection
 from .models import User, Card, Deck, Game
 
 class UsernameSerializer(serializers.ModelSerializer):
@@ -15,7 +15,7 @@ class CardSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'manaCost', 'cmc', 'type', 'rarity', 'set', 'text', 'imageUrl')
 
 
-class DeckSerializer(serializers.ModelSerializer):
+class ReadDeckSerializer(serializers.ModelSerializer):
     created_by = UsernameSerializer(read_only=True)
     cards = CardSerializer(many=True, read_only=True)
 
@@ -23,8 +23,30 @@ class DeckSerializer(serializers.ModelSerializer):
         model = Deck
         fields = ('id', 'name', 'created_by', 'win_rate', 'cards')
 
+
+class WriteDeckSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Deck
+        fields = ('id', 'name', 'win_rate', 'cards')
+
+    def create(self, validated_data):
+        cards = validated_data.pop('cards')
+        deck = Deck.objects.create(**validated_data)
+
+        sql = 'INSERT INTO mtg_decks_deck_cards (deck_id, card_id) VALUES '
+
+        sql += ','.join([f'({deck.id}, {card.id})' for card in cards])
+
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
+
+        return deck
+
+
+
 class GameSerializer(serializers.ModelSerializer):
-    decks = DeckSerializer()
+    decks = ReadDeckSerializer()
 
     class Meta:
         model = Game
@@ -32,8 +54,8 @@ class GameSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     games_played = GameSerializer(many=True)
-    decks_created = DeckSerializer(many=True)
-    decks_played = DeckSerializer(many=True)
+    decks_created = ReadDeckSerializer(many=True)
+    decks_played = ReadDeckSerializer(many=True)
     collection = CardSerializer(many=True)
 
     class Meta:

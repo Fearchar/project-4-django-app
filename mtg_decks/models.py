@@ -30,7 +30,6 @@ class Deck(models.Model):
     def __str__(self):
         return f'{self.name} ({self.created_by})'
 
-
 class Game(models.Model):
     created_by = models.ForeignKey(User, null=True, related_name='games_created', on_delete=models.SET_NULL)
     date_played = models.CharField(max_length=50)

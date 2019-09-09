@@ -122,7 +122,7 @@ class CardsIndex extends React.Component {
       // !!! Need to change this to pk here and on the backend, once you have auth up and running
       created_by_pk: 'admin',
       win_rate: deck.win_rate,
-      card_pks: cardIds
+      cards: cardIds
     }
     if (!deck.id) {
       axios.post('/api/decks/', deckData)
