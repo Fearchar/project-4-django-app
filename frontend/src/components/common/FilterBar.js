@@ -101,11 +101,11 @@ const FilterBar = ({ cardFilters, storeCardFilters, resetFilters }) => {
           />
         </div>
         <div className="column is-one-third">
-          <label>Filter by rarity</label>
+          <label>Filter by type</label>
           <input
             className="input is-small"
-            name="rarity"
-            placeholder="Enter rarity"
+            name="type"
+            placeholder="Enter type"
             onChange={storeCardFilters}
           />
         </div>

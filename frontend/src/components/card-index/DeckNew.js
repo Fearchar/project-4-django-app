@@ -61,7 +61,7 @@ class DeckNew extends React.Component {
     if (isNaN(+value)) value = value.toLowerCase()
     else if (value) value = +value
     const cardFilters = { ...this.state.cardFilters, [e.target.name]: value }
-    this.setState({ cardFilters })
+    this.setState({ cardFilters, pageIndex: 0 })
   }
 
   // !!! Use lodash intersection to make this more efficient and to fix cmc behaviour

@@ -24,7 +24,6 @@ const DeckPanel = ({ deck, storeDeckName, removeCardFromDeck, saveDeck }) => {
         {
           deck.saveMessage &&
           <div className="panel-block">
-            <small className="help is-primary has-text-weight-bold">{deck.saveMessage}</small>
           </div>
         }
         <div className="deck-cards">

@@ -112,7 +112,7 @@ class DeckEdit extends React.Component {
     const deckCards = this.state.deck.cards
     deckCards.splice(cardIndex, 1)
     const deck = { ...this.state.deck, cards: deckCards}
-    this.setState({ deck })
+    this.setState({ deck, pageIndex: 0 })
   }
 
   saveDeck() {
