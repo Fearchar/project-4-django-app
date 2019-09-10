@@ -1,22 +1,22 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
-// import Auth from '../../lib/Auth'
+import Auth from '../../lib/Auth'
 
 class Navbar extends React.Component {
 
-  // constructor() {
-  //   super()
-  //   this.state = {
-  //     navbarOpen: false
-  //   }
-  //   this.logout = this.logout.bind(this)
+  constructor() {
+    super()
+    this.state = {
+      navbarOpen: false
+    }
+    this.logout = this.logout.bind(this)
   //   this.toggleNavbar = this.toggleNavbar.bind(this)
-  // }
+  }
   //
-  // logout() {
-  //   Auth.removeToken()
-  //   this.props.history.push('/')
-  // }
+  logout() {
+    Auth.removeToken()
+    this.props.history.push('/')
+  }
   //
   // toggleNavbar() {
   //   this.setState({ navbarOpen: !this.state.navbarOpen})
@@ -79,10 +79,19 @@ class Navbar extends React.Component {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                {
-                  <Link to="/register" className="button is-info">
-                    <strong>Sign up</strong>
-                  </Link>
+                {!Auth.isAuthenticated() ?
+                  <div>
+                    <Link to="/register" className="button is-info">
+                      <strong>Sign up</strong>
+                    </Link>
+                    <Link to="/login" className="button is-info">
+                      <strong>Login</strong>
+                    </Link>
+                  </div> :
+                  <button
+                    className="button is-info"
+                    onClick={this.logout}
+                  >Logout</button>
                 }
               </div>
             </div>

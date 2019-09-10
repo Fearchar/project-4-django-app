@@ -15,7 +15,7 @@ class UserList(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()#user=request.user)
+            serializer.save(user=request.user)
             return Response(serializer.data, status=201)
 
         return Response(serializer.errors, status=422)
@@ -30,7 +30,7 @@ class CardList(APIView):
     def post(self, request):
         serializer = CardSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()#user=request.user)
+            serializer.save(user=request.user)
             return Response(serializer.data, status=201)
 
         return Response(serializer.errors, status=422)
@@ -44,11 +44,9 @@ class DeckList(APIView):
 
 # !!! Needs to check if user is is_valid and possibly that they're the one signed in. I also need to check that the cards are valid. Should be simpler when auth is linked up
     def post(self, request):
-        # !!! Consider changing for pk
-        user = User.objects.get(username=request.data['created_by_pk'])
         serializer = WriteDeckSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(created_by=user)
+            serializer.save(created_by=request.user)
             serializer = ReadDeckSerializer(serializer.instance)
 
             return Response(serializer.data, status=201)
@@ -94,7 +92,7 @@ class GameList(APIView):
     def post(self, request):
         serializer = GameSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()#user=request.user)
+            serializer.save(user=request.user)
             return Response(serializer.data, status=201)
 
         return Response(serializer.errors, status=422)

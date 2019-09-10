@@ -8,7 +8,7 @@ import FilterBar from './FilterBar'
 import PaginationBar from './PaginationBar'
 import CardColumns from './CardColumns'
 
-class DeckNew extends React.Component {
+class DeckDetail extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -121,19 +121,25 @@ class DeckNew extends React.Component {
     const cardIds = deck.cards.map(card => card.id)
     const deckData = {
       name: deck.name,
-      // !!! Need to change this to pk here and on the backend, once you have auth up and running
-      created_by_pk: 'admin',
       win_rate: deck.win_rate,
       cards: cardIds
     }
     if (this.state.mode === 'new') {
-      axios.post('/api/decks/', deckData)
+      axios.post('/api/decks/', deckData, {
+        headers: {
+          Authorization: `Bearer ${Auth.getToken()}`
+        }
+      })
         .then(res => {
           const deck = res.data
           this.props.history.push(`/decks/edit/${deck.id}`)
         })
-    } else {
-      axios.put(`/api/decks/${this.props.match.params.id}`, deckData)
+    } else if (this.state.mode === 'edit') {
+      axios.put(`/api/decks/${this.props.match.params.id}`, deckData, {
+        headers: {
+          Authorization: `Bearer ${Auth.getToken()}`
+        }
+      })
         .then(res => {
           const deck = res.data
           this.props.history.push(`/decks/edit/${deck.id}`)
@@ -183,12 +189,10 @@ class DeckNew extends React.Component {
     console.log('state:', this.state)
     const cards = this.filterCards(cards)
     const totalPages = Math.floor((cards.length - 1) / this.state.pageSize)
-    // !!! Get rid of difference column sizes if you don't make deck panel pull out
     return (
       <div className="columns">
         <div className="column is-8">
           <div className="section">
-            {Auth.isAuthenticated() ? <h1 className="title">Here</h1> : <h1 className="title">Not Here</h1>}
             <FilterBar
               cardFilters={this.state.cardFilters}
               storeCardFilters={this.storeCardFilters}
@@ -225,4 +229,4 @@ class DeckNew extends React.Component {
   }
 }
 
-export default DeckNew
+export default DeckDetail

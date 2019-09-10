@@ -30,7 +30,7 @@ class Login extends React.Component {
       .then(res => {
         Auth.setToken(res.data.token) // store the token in localStorage
         toast.success(res.data.message)
-        this.props.history.push('/decks/new') // redirect to the cheeses INDEX page
+        this.props.history.push('/') // redirect to the cheeses INDEX page
       })
       .catch(() => {
         Auth.removeToken() // remove the token from localStorage
@@ -39,7 +39,7 @@ class Login extends React.Component {
   }
 
   redirectToSignUp() {
-    this.props.history.push('register')
+    this.props.history.push('/register')
   }
 
   render() {
