@@ -4,7 +4,10 @@ class DeckIndex extends React.Component {
 
   render() {
     return (
-      <h1>DeckIndex Page</h1>
+      <div className="columns">
+        <div className="column">
+        </div>
+      </div>
     )
   }
 }

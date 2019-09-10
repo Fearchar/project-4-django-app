@@ -98,11 +98,7 @@ class DeckDetail extends React.Component {
 
   addCardToDeck(card) {
     const deckCards = [...this.state.deck.cards, card]
-    // !!! Change to sort by manaCost
-    deckCards.sort((a, b) => {
-      if (a.name < b.name) return -1
-      if (b.name < a.name) return 1
-    })
+    deckCards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
     const deck = { ...this.state.deck, cards: deckCards }
     console.log('deck in add:', deck)
     this.setState({ deck })

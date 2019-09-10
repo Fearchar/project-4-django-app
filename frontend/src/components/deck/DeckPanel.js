@@ -33,7 +33,7 @@ const DeckPanel = ({ deck, storeDeckName, removeCardFromDeck, saveDeck }) => {
               className="panel-block"
               onClick={() => removeCardFromDeck(card)}
             >
-              <p>{card.name}</p>
+              <p>{card.manaCost} {card.name}</p>
             </div>
           )}
         </div>

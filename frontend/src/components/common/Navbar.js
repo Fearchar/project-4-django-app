@@ -31,7 +31,7 @@ class Navbar extends React.Component {
   // <h1 className="title">Happening</h1>
   render() {
     return (
-      <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
+      <nav className="navbar is-link" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <a
             role="button"
@@ -57,24 +57,8 @@ class Navbar extends React.Component {
               </div>
             </Link>
             <div className="navbar-item has-dropdown is-hoverable">
-              <div className="navbar-link">
-                Happenings
-              </div>
-              <div className="navbar-dropdown">
-                <Link to="/happenings" className="navbar-item">
-                  Browse All Happenings
-                </Link>
-                <Link to="/happenings/search" className="navbar-item">
-                  Search by Catagory, Date or Location
-                </Link>
-                <Link to="/happenings/new" className="navbar-item">
-                    Create A Happening
-                </Link>
-              </div>
+
             </div>
-            <Link to="/about" className="navbar-item">
-            About
-            </Link>
           </div>
           <div className="navbar-end">
             <div className="navbar-item">

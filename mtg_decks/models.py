@@ -21,6 +21,7 @@ class Card(models.Model):
 class Deck(models.Model):
     name = models.CharField(max_length=50)
     cards = models.ManyToManyField(Card, related_name='decks')
+    imageUrl = models.CharField(blank=True, max_length=300)
     win_rate = models.FloatField(blank=True, null=True)
     created_by = models.ForeignKey(User, null=True, related_name='decks_created', on_delete=models.SET_NULL)
     users = models.ManyToManyField(User, related_name='decks_played')
