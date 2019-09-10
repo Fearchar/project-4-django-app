@@ -64,8 +64,6 @@ class DeckDetail extends React.Component {
     this.setState({ cardFilters, pageIndex: 0 })
   }
 
-  // !!! Use lodash intersection to make this more efficient and to fix cmc behaviour
-  // !! make rarity a drop down and make it have to exactly equal result
   filterCards() {
     let cards = this.state.cards
     const cardFilters = this.state.cardFilters
@@ -80,7 +78,8 @@ class DeckDetail extends React.Component {
 
       })
     }
-    return cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+    cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+    return cards
   }
 
   resetFilters() {
@@ -112,6 +111,7 @@ class DeckDetail extends React.Component {
 
   saveDeck() {
     const deck = this.state.deck
+    deck.cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
     const cardIds = deck.cards.map(card => card.id)
     const deckData = {
       name: deck.name,

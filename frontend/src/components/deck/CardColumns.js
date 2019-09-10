@@ -5,11 +5,11 @@ const CardColumns = ({ cards, pageIndex, pageSize, addCardToDeck}) => {
   if (!cards[0]) return <h1 className="title">Loading...</h1>
   return (
     <div>
-      <div className="columns is-multiline">
+      <div className="columns is-mobile is-multiline">
         {cards.map(card =>
           <div
             key={card.id}
-            className="column is-one-quarter card-front"
+            className="column is-one-quarter-desktop card-front is-half-mobile"
             onClick={() => addCardToDeck(card)}
           >
             {!card.imageUrl ? <h3>{card.name}</h3> :

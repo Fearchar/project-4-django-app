@@ -33,34 +33,36 @@ class WriteDeckSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         cards = validated_data.pop('cards')
-        deck = Deck.objects.create(**validated_data)
+        instance = Deck.objects.create(**validated_data)
 
-        sql = 'INSERT INTO mtg_decks_deck_cards (deck_id, card_id) VALUES '
+        insert_command = 'INSERT INTO mtg_decks_deck_cards (deck_id, card_id) VALUES '
 
-        sql += ','.join([f'({deck.id}, {card.id})' for card in cards])
+        insert_command += ','.join([f'({instance.id}, {card.id})' for card in cards])
 
         with connection.cursor() as cursor:
-            cursor.execute(sql)
+            cursor.execute(insert_command)
 
-        return deck
+        return instance
 
-    def update(self, deck, validated_data):
+    def update(self, instance, validated_data):
         cards = validated_data.pop('cards')
-        deck.name = validated_data.get('name', deck.name)
-        deck.win_rate = validated_data.get('win_rate', deck.win_rate)
-        deck.imageUrl = validated_data.get('imageUrl', deck.imageUrl)
+        instance.name = validated_data.get('name', instance.name)
+        instance.win_rate = validated_data.get('win_rate', instance.win_rate)
+        instance.imageUrl = validated_data.get('imageUrl', instance.imageUrl)
 
-        for card in Card.objects.filter(decks=deck):
-            deck.cards.remove(card)
+        delete_command = f'DELETE FROM mtg_decks_deck_cards WHERE deck_id = {instance.id}'
 
-        sql = 'INSERT INTO mtg_decks_deck_cards (deck_id, card_id) VALUES '
 
-        sql += ','.join([f'({deck.id}, {card.id})' for card in cards])
+        insert_command = 'INSERT INTO mtg_decks_deck_cards (deck_id, card_id) VALUES '
+
+        insert_command += ','.join([f'({instance.id}, {card.id})' for card in cards])
 
         with connection.cursor() as cursor:
-            cursor.execute(sql)
+            cursor.execute(delete_command)
+            cursor.execute(insert_command)
 
-        return deck
+        instance.save()
+        return instance
 
 class GameSerializer(serializers.ModelSerializer):
     decks = ReadDeckSerializer()

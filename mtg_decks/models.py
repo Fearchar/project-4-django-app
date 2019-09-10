@@ -12,8 +12,6 @@ class Card(models.Model):
     imageUrl = models.CharField(blank=True, max_length=300)
     users = models.ManyToManyField(User, related_name='collection')
 
-    unique_together = ['name', 'set']
-
     def __str__(self):
         return f'{self.name}: {self.type} - {self.rarity} ({self.set})'
 
@@ -25,8 +23,6 @@ class Deck(models.Model):
     win_rate = models.FloatField(blank=True, null=True)
     created_by = models.ForeignKey(User, null=True, related_name='decks_created', on_delete=models.SET_NULL)
     users = models.ManyToManyField(User, related_name='decks_played')
-
-    unique_together = ['name', 'created_by']
 
     def __str__(self):
         return f'{self.name} ({self.created_by})'

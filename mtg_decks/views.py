@@ -69,13 +69,13 @@ class DeckDetail(APIView):
 
     def put(self, request, pk):
         deck = self.get_deck(pk)
-        serializer = WriteDeckSerializer(deck, data=request.data)
-        if serializer.is_valid():
-            deck = serializer.save()
-            serializer = ReadDeckSerializer(deck)
-            return Response(serializer.data, status=201)
+        write_serializer = WriteDeckSerializer(deck, data=request.data)
+        if write_serializer.is_valid():
+            write_serializer.save()
+            read_serializer = ReadDeckSerializer(write_serializer.instance)
+            return Response(read_serializer.data)
 
-        return Response(serializer.errors, status=422)
+        return Response(write_serializer.errors, status=422)
 
     def delete(self, _request, pk):
         movie = self.get_deck(pk)

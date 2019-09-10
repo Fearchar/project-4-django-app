@@ -11,12 +11,6 @@ class Command(BaseCommand):
             response = requests.get(url)
             cards = response.json()['cards']
             for card in cards:
-                if not 'text' in card:
-                    print('No Text:', card['name'])
-                if not 'manaCost' in card:
-                    print('No ManaCost:', card['name'])
-                if not 'imageUrl' in card:
-                    print('No ImageUrl:', card['name'])
                 card = {
                     'name': card['name'],
                     'manaCost': '' if not 'manaCost' in card else ''.join(
@@ -34,7 +28,6 @@ class Command(BaseCommand):
                 if serialzer.is_valid():
                     serialzer.save()
                     card_name = card['name']
-                    print(f'Card {card_name}: Saved!')
 
         for i in range(4):
             saveCards(f'https://api.magicthegathering.io/v1/cards?set=M20&page={i+1}')
