@@ -109,12 +109,10 @@ const FilterBar = ({ cardFilters, storeCardFilters, resetFilters }) => {
             onChange={storeCardFilters}
           />
         </div>
-        <div className="has-text-centered">
-          <button
-            className="button is-small is-rounded is-link"
-            onClick={resetFilters}
-          >Reset</button>
-        </div>
+        <button
+          className="button is-small is-rounded is-link"
+          onClick={resetFilters}
+        >Reset</button>
       </div>
     </div>
   )

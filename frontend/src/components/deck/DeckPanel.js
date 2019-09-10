@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DeckPanel = ({ deck, storeDeckName, removeCardFromDeck, saveDeck }) => {
+const DeckPanel = ({ deck, storeDeckDetails, removeCardFromDeck, saveDeck }) => {
   const deckCards = deck.cards
   return (
     <div className="container">
@@ -9,9 +9,21 @@ const DeckPanel = ({ deck, storeDeckName, removeCardFromDeck, saveDeck }) => {
         <div className="panel-heading">
           <input
             className="input is-medium has-text-weight-medium"
-            name="deckName"
+            name="name"
+            onChange={storeDeckDetails}
             value={deck.name}
-            onChange={storeDeckName}
+          />
+        </div>
+        <div className="panel-block">
+          <p>Win Rate</p>
+          <input
+            className="input is-medium has-text-weight-medium"
+            type="number"
+            min="0"
+            max="100"
+            name="win_rate"
+            onChange={storeDeckDetails}
+            value={deck.win_rate}
           />
         </div>
         <div className="panel-block">

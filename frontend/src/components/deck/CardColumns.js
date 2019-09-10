@@ -9,7 +9,7 @@ const CardColumns = ({ cards, pageIndex, pageSize, addCardToDeck}) => {
         {cards.map(card =>
           <div
             key={card.id}
-            className="column is-one-quarter-desktop card-front is-half-mobile"
+            className="column is-one-quarter-desktop is-one-quarter-tablet card-front is-half-mobile is-one-quarter-widescreen is-one-quarter-fullhd"
             onClick={() => addCardToDeck(card)}
           >
             {!card.imageUrl ? <h3>{card.name}</h3> :
