@@ -126,12 +126,20 @@ class DeckNew extends React.Component {
       win_rate: deck.win_rate,
       cards: cardIds
     }
-    axios.post('/api/decks/', deckData)
-      .then(res => {
-        const deck = res.data
-        this.props.history.push(`/decks/edit/${deck.id}`)
-      })
-      // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
+    if (this.state.mode === 'new') {
+      axios.post('/api/decks/', deckData)
+        .then(res => {
+          const deck = res.data
+          this.props.history.push(`/decks/edit/${deck.id}`)
+        })
+    } else {
+      axios.put(`/api/decks/${this.props.match.params.id}`, deckData)
+        .then(res => {
+          const deck = res.data
+          this.props.history.push(`/decks/edit/${deck.id}`)
+        })
+    }
+    // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
   //
   // deleteDeck() {

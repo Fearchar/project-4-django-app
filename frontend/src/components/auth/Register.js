@@ -40,7 +40,7 @@ class Register extends React.Component {
             <div className="column is-half-desktop">
               <form onSubmit={this.handleSubmit}>
                 <div className="field">
-                  <label className="label">User Fame</label>
+                  <label className="label">Username</label>
                   <div className="control">
                     <input
                       className="input"
@@ -50,19 +50,6 @@ class Register extends React.Component {
                     />
                   </div>
                   {this.state.errors.username && <small className="help is-danger">{this.state.errors.username}</small>}
-                </div>
-                <div className="field">
-                  <label className="label">Email</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="email"
-                      name="email"
-                      placeholder="eg"
-                      onChange={this.handleChange}
-                    />
-                  </div>
-                  {this.state.errors.email && <small className="help is-danger">{this.state.errors.email}</small>}
                 </div>
                 <div className="field">
                   <label className="label">Password</label>
@@ -90,7 +77,6 @@ class Register extends React.Component {
                   </div>
                   {this.state.errors.password_confirmation && <small className="help is-danger">{this.state.errors.password_confirmation}</small>}
                 </div>
-
                 <button className="button">Submit</button>
               </form>
             </div>
