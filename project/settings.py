@@ -131,7 +131,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # this adds our custom authentication middleware
-# !!! Need to commment this back in once you've connected jwt_auth        'jwt_auth.authentication.JWTAuthentication',
+        'jwt_auth.authentication.JWTAuthentication',
         'rest_framework.authentication.BasicAuthentication',
 # !!! remove this if remains commented out by end of project   'rest_framework.authentication.SessionAuthentication',
     ],

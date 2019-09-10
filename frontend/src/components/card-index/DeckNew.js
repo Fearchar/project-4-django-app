@@ -1,9 +1,11 @@
 import React from 'react'
 import axios from 'axios'
 
+import Auth from '../../lib/Auth'
+
 import DeckPanel from './DeckPanel'
-import FilterBar from '../common/FilterBar'
-import PaginationBar from '../common/PaginationBar'
+import FilterBar from './FilterBar'
+import PaginationBar from './PaginationBar'
 import CardColumns from './CardColumns'
 
 class DeckNew extends React.Component {
@@ -178,6 +180,7 @@ class DeckNew extends React.Component {
       <div className="columns">
         <div className="column is-8">
           <div className="section">
+            {Auth.isAuthenticated() ? <h1 className="title">Here</h1> : <h1 className="title">Not Here</h1>}
             <FilterBar
               cardFilters={this.state.cardFilters}
               storeCardFilters={this.storeCardFilters}

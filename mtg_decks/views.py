@@ -1,16 +1,9 @@
-# import datetime
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import User, Card, Deck, Game
 from .serializers import UserSerializer, CardSerializer, WriteDeckSerializer, ReadDeckSerializer, GameSerializer
-
-# !!! Saved at should be on the model, rather than tacked on on the way out
-# def addSavedMessage(data):
-#     saved_at = datetime.datetime.now()
-#     data = {**data, 'saveMessage': f'Deck saved at {saved_at.day}/{saved_at.month}/{saved_at.year} {saved_at.hour}:{saved_at.minute}'}
-#     return data
 
 class UserList(APIView):
 
