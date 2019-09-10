@@ -53,7 +53,6 @@ class DeckDetail extends React.Component {
   // !!! Turn the two below in to one function and change name to storeChange
   storeDeckName(e) {
     const deck = { ...this.state.deck, name: e.target.value }
-    console.log(e.target.value, deck)
     this.setState({ deck })
   }
 
@@ -100,7 +99,6 @@ class DeckDetail extends React.Component {
     const deckCards = [...this.state.deck.cards, card]
     deckCards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
     const deck = { ...this.state.deck, cards: deckCards }
-    console.log('deck in add:', deck)
     this.setState({ deck })
   }
 
@@ -118,7 +116,8 @@ class DeckDetail extends React.Component {
     const deckData = {
       name: deck.name,
       win_rate: deck.win_rate,
-      cards: cardIds
+      cards: cardIds,
+      imageUrl: deck.cards[deck.cards.length - 1].imageUrl
     }
     if (this.state.mode === 'new') {
       axios.post('/api/decks/', deckData, {
@@ -130,6 +129,7 @@ class DeckDetail extends React.Component {
           const deck = res.data
           this.props.history.push(`/decks/edit/${deck.id}`)
         })
+
     } else if (this.state.mode === 'edit') {
       axios.put(`/api/decks/${this.props.match.params.id}`, deckData, {
         headers: {
@@ -138,7 +138,7 @@ class DeckDetail extends React.Component {
       })
         .then(res => {
           const deck = res.data
-          this.props.history.push(`/decks/edit/${deck.id}`)
+          this.setState({ deck })
         })
     }
     // !!! .catch(err => this.setState({ errors: err.response.data.errors }))

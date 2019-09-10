@@ -21,7 +21,7 @@ class ReadDeckSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Deck
-        fields = ('id', 'name', 'created_by', 'win_rate', 'cards')
+        fields = ('id', 'name', 'created_by', 'win_rate', 'imageUrl', 'cards')
 
 
 class WriteDeckSerializer(serializers.ModelSerializer):
@@ -29,7 +29,7 @@ class WriteDeckSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Deck
-        fields = ('id', 'name', 'win_rate', 'cards')
+        fields = ('id', 'name', 'win_rate', 'imageUrl', 'cards')
 
     def create(self, validated_data):
         cards = validated_data.pop('cards')
@@ -48,6 +48,7 @@ class WriteDeckSerializer(serializers.ModelSerializer):
         cards = validated_data.pop('cards')
         deck.name = validated_data.get('name', deck.name)
         deck.win_rate = validated_data.get('win_rate', deck.win_rate)
+        deck.imageUrl = validated_data.get('imageUrl', deck.imageUrl)
 
         for card in Card.objects.filter(decks=deck):
             deck.cards.remove(card)
@@ -60,8 +61,6 @@ class WriteDeckSerializer(serializers.ModelSerializer):
             cursor.execute(sql)
 
         return deck
-
-
 
 class GameSerializer(serializers.ModelSerializer):
     decks = ReadDeckSerializer()
