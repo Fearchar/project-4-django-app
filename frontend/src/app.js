@@ -6,7 +6,7 @@ import './style.scss'
 
 import Navbar from './components/common/NavBar'
 import DeckNew from './components/card-index/DeckNew'
-import DeckEdit from './components/card-index/DeckEdit'
+// import DeckEdit from './components/card-index/DeckEdit'
 
 class App extends React.Component {
   render() {
@@ -15,7 +15,7 @@ class App extends React.Component {
         <Navbar />
         <Switch>
           <Route path="/decks/new" component={DeckNew}/>
-          <Route path="/decks/edit/:id" component={DeckEdit}/>
+          <Route path="/decks/edit/:id" component={DeckNew}/>
         </Switch>
       </HashRouter>
     )

@@ -22,7 +22,6 @@ class DeckNew extends React.Component {
         cmc: '',
         rarity: ''
       },
-      deckPanelOpen: true,
       deck: {
         id: null,
         saveMessage: '',
@@ -143,8 +142,24 @@ class DeckNew extends React.Component {
       .then(res => this.setState({cards: res.data}))
   }
 
-  componentDidMount() {
+  startPage() {
     this.getCards()
+    const mode = this.props.match.path.includes('edit') ? 'edit' : 'new'
+    if (mode === 'edit') {
+      axios.get(`/api/decks/${this.props.match.params.id}`)
+        .then(res => this.setState({ deck: res.data }))
+    } else {
+      const deck = {
+        name: '',
+        cards: []
+      }
+      this.setState({ deck })
+    }
+    this.setState({ mode })
+  }
+
+  componentDidMount() {
+    this.startPage()
   }
 
   componentDidUpdate(prevProps) {
@@ -161,7 +176,7 @@ class DeckNew extends React.Component {
     // !!! Get rid of difference column sizes if you don't make deck panel pull out
     return (
       <div className="columns">
-        <div className={`column ${!this.state.deckPanelOpen ? 'is-11' : 'is-8'}`}>
+        <div className="column is-8">
           <div className="section">
             <FilterBar
               cardFilters={this.state.cardFilters}
@@ -186,13 +201,13 @@ class DeckNew extends React.Component {
             />
           </div>
         </div>
-        <div className={`column ${!this.state.deckPanelOpen ? 'is-1' : 'is-4'}`}>
-          {this.state.deckPanelOpen ? <DeckPanel
+        <div className="column is-4">
+          <DeckPanel
             deck={this.state.deck}
             storeDeckName={this.storeDeckName}
             removeCardFromDeck={this.removeCardFromDeck}
             saveDeck={this.saveDeck}
-          /> : ''}
+          />
         </div>
       </div>
     )
