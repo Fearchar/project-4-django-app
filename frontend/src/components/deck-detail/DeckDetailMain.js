@@ -8,7 +8,7 @@ import FilterBar from './FilterBar'
 import PaginationBar from './PaginationBar'
 import CardColumns from './CardColumns'
 
-class DeckDetail extends React.Component {
+class DeckDetailMain extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -225,4 +225,4 @@ class DeckDetail extends React.Component {
   }
 }
 
-export default DeckDetail
+export default DeckDetailMain

@@ -7,8 +7,9 @@ import './style.scss'
 import Navbar from './components/common/NavBar'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
-import DeckIndex from './components/deck/DeckIndex'
-import DeckDetail from './components/deck/DeckDetail'
+import DeckDetailMain from './components/deck/DeckDetailMain'
+import DeckIndexMain from './components/deck-index/DeckIndexMain'
+import Home from './components/home/Home'
 
 class App extends React.Component {
   render() {
@@ -18,9 +19,10 @@ class App extends React.Component {
         <Switch>
           <Route path="/register" component={Register}/>
           <Route path="/login" component={Login}/>
-          <Route path="/decks/edit/:id" component={DeckDetail}/>
-          <Route path="/decks/new" component={DeckDetail}/>
-          <Route path="/decks" component={DeckIndex}/>
+          <Route path="/decks/edit/:id" component={DeckDetailMain}/>
+          <Route path="/decks/new" component={DeckDetailMain}/>
+          <Route path="/decks" component={DeckIndexMain}/>
+          <Route path="/" component={Home}/>
         </Switch>
       </HashRouter>
     )
