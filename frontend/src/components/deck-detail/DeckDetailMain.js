@@ -65,8 +65,7 @@ class DeckDetailMain extends React.Component {
     this.setState({ cardFilters, pageIndex: 0 })
   }
 
-  filterCards() {
-    let cards = this.state.cards
+  filterCards(cards) {
     const cardFilters = this.state.cardFilters
     for (const key in cardFilters) {
       if (cardFilters[key] !== '') cards = cards.filter(card => {
@@ -95,10 +94,12 @@ class DeckDetailMain extends React.Component {
   }
 
   addCardToDeck(card) {
-    const deckCards = [...this.state.deck.cards, card]
-    deckCards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
-    const deck = { ...this.state.deck, cards: deckCards }
-    this.setState({ deck })
+    if (this.state.mode !== 'show') {
+      const deckCards = [...this.state.deck.cards, card]
+      deckCards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+      const deck = { ...this.state.deck, cards: deckCards }
+      this.setState({ deck })
+    }
   }
 
   removeCardFromDeck(card) {
@@ -125,41 +126,36 @@ class DeckDetailMain extends React.Component {
           Authorization: `Bearer ${Auth.getToken()}`
         }
       })
-        .then(res => {
-          const deck = res.data
-          this.props.history.push(`/decks/edit/${deck.id}`)
-        })
-
+        .then(res => this.props.history.push(`/decks/${res.data.id}/edit`))
     } else if (this.state.mode === 'edit') {
       axios.put(`/api/decks/${this.props.match.params.id}`, deckData, {
         headers: {
           Authorization: `Bearer ${Auth.getToken()}`
         }
       })
-        .then(res => {
-          this.setState({ deck: res.data })
-        })
+        .then(res => this.setState({ deck: res.data }))
     }
-    // !!! .catch(err => this.setState({ errors: err.response.data.errors }))
   }
-  //
-  // deleteDeck() {
-  //
-  // }
 
   getCards() {
     axios.get('/api/cards/')
-      // !!! Could result in a 404 page if they have errors. Even if it's just a h tag.
       .then(res => this.setState({cards: res.data}))
   }
 
+  getDeck() {
+    axios.get(`/api/decks/${this.props.match.params.id}`)
+      .then(res => this.setState({ deck: res.data }))
+  }
+
   startPage() {
-    this.getCards()
-    const mode = this.props.match.path.includes('edit') ? 'edit' : 'new'
-    if (mode === 'edit') {
-      axios.get(`/api/decks/${this.props.match.params.id}`)
-        .then(res => this.setState({ deck: res.data }))
-    } else {
+    const mode = this.props.match.path.includes('new') ? 'new' : this.props.match.path.includes('edit') ? 'edit' : 'show'
+    if (mode === 'show') {
+      this.getDeck()
+    } else if (mode === 'edit') {
+      this.getCards()
+      this.getDeck()
+    } else if (mode === 'new') {
+      this.getCards()
       const deck = {
         name: '',
         cards: []
@@ -181,12 +177,12 @@ class DeckDetailMain extends React.Component {
 
 
   render() {
-    console.log('state:', this.state)
-    const cards = this.filterCards(cards)
+    const mode = this.state.mode
+    const cards = mode === 'show' ? this.filterCards(this.state.deck.cards) : this.filterCards(this.state.cards)
     const totalPages = Math.floor((cards.length - 1) / this.state.pageSize)
     return (
       <div className="columns">
-        <div className="column is-8">
+        <div className={`column ${mode === 'show' ? '' : 'is-8'}`}>
           <div className="section">
             <FilterBar
               cardFilters={this.state.cardFilters}
@@ -199,6 +195,7 @@ class DeckDetailMain extends React.Component {
               changePage={this.changePage}
             />
             <CardColumns
+              mode={mode}
               cards={cards}
               pageIndex={this.state.pageIndex}
               pageSize={this.state.pageSize}
@@ -211,14 +208,16 @@ class DeckDetailMain extends React.Component {
             />
           </div>
         </div>
-        <div className="column is-4">
-          <DeckPanel
-            deck={this.state.deck}
-            handleChange={this.handleChange}
-            removeCardFromDeck={this.removeCardFromDeck}
-            saveDeck={this.saveDeck}
-          />
-        </div>
+        {mode === 'show' ? '' :
+          <div className="column is-4">
+            <DeckPanel
+              deck={this.state.deck}
+              handleChange={this.handleChange}
+              removeCardFromDeck={this.removeCardFromDeck}
+              saveDeck={this.saveDeck}
+            />
+          </div>
+        }
       </div>
     )
   }

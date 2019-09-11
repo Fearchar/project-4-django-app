@@ -1,11 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+
+import DeckLink from '../common/DeckLink'
 
 const DeckBox = ({ deck }) => {
   return(
-    <Link
-      to={`/decks/edit/${deck.id}`}
+    <DeckLink
       className="column is-one-quarter"
+      deck={deck}
     >
       <div className="box card-font has-text-centered"
       >
@@ -22,7 +23,7 @@ const DeckBox = ({ deck }) => {
           <p className="has-text-weight-bold">{`Win Rate %: ${deck.win_rate || '-'}`}</p>
         </div>
       </div>
-    </Link>
+    </DeckLink>
   )
 }
 
