@@ -27,7 +27,7 @@ class HomeMain extends React.Component {
         <section className="hero">
           <div className="hero-body">
             <div className="container">
-              <h1 className="title is-1">Mana Curve<i className="ms ms-guild-simic has-text-weight-medium"></i></h1>
+              <h1 className="title is-1">Mana <i className="ms ms-guild-simic has-text-weight-medium"></i>urve</h1>
               <h2 className="subtitle has-text-weight-medium">
                 The Best Decks In Magic The Gathering
               </h2>

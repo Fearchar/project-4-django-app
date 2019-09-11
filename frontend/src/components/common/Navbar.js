@@ -53,7 +53,7 @@ class NavBar extends React.Component {
           <div className="navbar-start">
             <Link to="/" className="navbar-item">
               <div className="navbar-brand">
-                <div className="navbar-item title is-1">MC<i className="ms ms-guild-simic has-text-weight-medium"></i></div>
+                <div className="navbar-item title is-1">M<i className="ms ms-guild-simic has-text-weight-medium"></i></div>
               </div>
             </Link>
             <div className="navbar-item has-dropdown is-hoverable">
