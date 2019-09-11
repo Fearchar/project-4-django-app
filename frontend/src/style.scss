@@ -14,14 +14,14 @@ body {
     background-color: #ececec;
   }
 
-  div.ms {
-    text-align: center;
-  }
-
   i.ms-guild-simic {
     position: relative;
     top: -8px;
     background-color: transparent;
+  }
+
+  a.navbar-item p {
+    color: #fafafa;
   }
 
   nav.panels {
@@ -39,7 +39,7 @@ body {
     }
 
     div.deck-cards {
-      height: 110vh;
+      height: 100vh;
       overflow: scroll;
       border: solid 1px lightgrey;
       border-top: none;

@@ -92,10 +92,14 @@ class DeckDetailMain extends React.Component {
     this.setState({ cardFilters })
   }
 
+  sortByCmc(cards) {
+    return cards.sort((cardA, cardB) => cardA.cmc - cardB.cmc)
+  }
+
   addCardToDeck(card) {
     if (this.state.mode !== 'show') {
       const deckCards = [...this.state.deck.cards, card]
-      deckCards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+      this.sortByCmc(deckCards)
       const deck = { ...this.state.deck, cards: deckCards }
       this.setState({ deck })
     }
@@ -111,7 +115,7 @@ class DeckDetailMain extends React.Component {
 
   saveDeck() {
     const deck = this.state.deck
-    deck.cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+    this.sortByCmc(deck.cards)
     const cardIds = deck.cards.map(card => card.id)
     const deckData = {
       name: deck.name,
@@ -132,14 +136,18 @@ class DeckDetailMain extends React.Component {
           Authorization: `Bearer ${Auth.getToken()}`
         }
       })
-        .then(res => this.setState({ deck: res.data }))
+        .then(res => {
+          const deck = res.data
+          deck.cards = this.sortByCmc(deck.cards)
+          this.setState({ deck: res.data })
+        })
     }
   }
 
   getCards() {
     axios.get('/api/cards/')
       .then(res => {
-        const cards = res.data.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+        const cards = this.sortByCmc(res.data)
         this.setState({ cards })
       })
   }
@@ -148,7 +156,7 @@ class DeckDetailMain extends React.Component {
     axios.get(`/api/decks/${this.props.match.params.id}`)
       .then(res => {
         const deck = res.data
-        deck.cards = deck.cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+        deck.cards = this.sortByCmc(deck.cards)
         this.setState({ deck })
       })
   }

@@ -10,25 +10,24 @@ class NavBar extends React.Component {
       navbarOpen: false
     }
     this.logout = this.logout.bind(this)
-  //   this.toggleNavbar = this.toggleNavbar.bind(this)
+    this.toggleNavbar = this.toggleNavbar.bind(this)
   }
   //
   logout() {
     Auth.removeToken()
     this.props.history.push('/')
   }
-  //
-  // toggleNavbar() {
-  //   this.setState({ navbarOpen: !this.state.navbarOpen})
-  // }
-  //
-  // componentDidUpdate(prevProps) {
-  //   if(prevProps.location.pathname !== this.props.location.pathname) {
-  //     this.setState({ navbarOpen: false})
-  //   }
-  // }
 
-  // <h1 className="title">Happening</h1>
+  toggleNavbar() {
+    this.setState({ navbarOpen: !this.state.navbarOpen})
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.location.pathname !== this.props.location.pathname) {
+      this.setState({ navbarOpen: false})
+    }
+  }
+
   render() {
     return (
       <nav className="navbar is-link" role="navigation" aria-label="main navigation">
@@ -56,9 +55,10 @@ class NavBar extends React.Component {
                 <div className="navbar-item title is-1">M<i className="ms ms-guild-simic has-text-weight-medium"></i></div>
               </div>
             </Link>
-            <div className="navbar-item has-dropdown is-hoverable">
-
-            </div>
+            <Link
+              to="/decks/new"
+              className="navbar-item"
+            ><p className="title">Build Deck</p></Link>
           </div>
           <div className="navbar-end">
             <div className="navbar-item">
