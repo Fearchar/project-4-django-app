@@ -1,4 +1,5 @@
 import requests
+import re
 from django.core.management.base import BaseCommand, CommandError
 # from mtg_decks.models import Card
 from mtg_decks.serializers import CardSerializer
@@ -27,8 +28,13 @@ class Command(BaseCommand):
                 serialzer = CardSerializer(data=card)
                 if serialzer.is_valid():
                     serialzer.save()
-                    card_name = card['name']
+            return response
 
-        for i in range(4):
-            saveCards(f'https://api.magicthegathering.io/v1/cards?set=M20&page={i+1}')
-            print(f'Page {i+1}: Saved!')
+        mtga_sets = ['M20', 'WAR', 'RAA', 'RNA', 'GRN', 'DOM', 'RIX', 'XLN']
+        for mtga_set in mtga_sets:
+            response = saveCards(f'https://api.magicthegathering.io/v1/cards?set={mtga_set}&page=1')
+            pages = re.search(r'page=\d+', response.headers['Link']).group()
+            pages = int(pages.split('=')[1])
+            for i in range(pages):
+                saveCards(f'https://api.magicthegathering.io/v1/cards?set={mtga_set}&page={i+1}')
+                print(f'Page {i+1} of {mtga_set}: Saved!')
