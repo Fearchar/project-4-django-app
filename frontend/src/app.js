@@ -9,7 +9,7 @@ import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import DeckDetailMain from './components/deck-detail/DeckDetailMain'
 import DeckIndexMain from './components/deck-index/DeckIndexMain'
-import Home from './components/home/Home'
+import HomeMain from './components/home/HomeMain'
 
 class App extends React.Component {
   render() {
@@ -22,7 +22,7 @@ class App extends React.Component {
           <Route path="/decks/edit/:id" component={DeckDetailMain}/>
           <Route path="/decks/new" component={DeckDetailMain}/>
           <Route path="/decks" component={DeckIndexMain}/>
-          <Route path="/" component={Home}/>
+          <Route path="/" component={HomeMain}/>
         </Switch>
       </HashRouter>
     )

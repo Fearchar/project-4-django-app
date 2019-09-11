@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import TopDecks from './TopDecks'
 
-class Home extends React.Component {
+class HomeMain extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -69,4 +69,4 @@ class Home extends React.Component {
 
 }
 
-export default Home
+export default HomeMain

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const TopDecks = ({ decks }) => {
   return (
@@ -6,14 +7,19 @@ const TopDecks = ({ decks }) => {
       className="columns"
     >
       {decks.map(deck =>
-        <div key={deck.id} className="columns column">
+        <div
+          key={deck.id}
+          className="columns column"
+        >
           <div className="column is-half">
-            <figure className="image">
-              <img
-                src={deck.imageUrl}
-                alt={deck.name}
-              />
-            </figure>
+            <Link to={`/decks/edit/${deck.id}`}>
+              <figure className="image">
+                <img
+                  src={deck.imageUrl}
+                  alt={deck.name}
+                />
+              </figure>
+            </Link>
           </div>
           <div className="column is-half">
             <h4 className="title is-3">{deck.name}</h4>
