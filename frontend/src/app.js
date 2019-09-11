@@ -7,7 +7,7 @@ import './style.scss'
 import Navbar from './components/common/NavBar'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
-import DeckDetailMain from './components/deck/DeckDetailMain'
+import DeckDetailMain from './components/deck-detail/DeckDetailMain'
 import DeckIndexMain from './components/deck-index/DeckIndexMain'
 import Home from './components/home/Home'
 
