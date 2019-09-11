@@ -34,7 +34,7 @@ class DeckDetail extends React.Component {
     }
 
     this.changePage = this.changePage.bind(this)
-    this.storeDeckDetails = this.storeDeckDetails.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.storeCardFilters = this.storeCardFilters.bind(this)
     this.resetFilters = this.resetFilters.bind(this)
     this.addCardToDeck = this.addCardToDeck.bind(this)
@@ -50,8 +50,7 @@ class DeckDetail extends React.Component {
     this.setState({ pageIndex })
   }
 
-  // !!! Turn the two below in to one function and change name to storeChange
-  storeDeckDetails(e) {
+  handleChange(e) {
     const deck = { ...this.state.deck, [e.target.name]: e.target.value }
     if (deck.win_rate > 100) deck.win_rate = 100
     if (deck.win_rate < 0) deck.win_rate = 0
@@ -216,7 +215,7 @@ class DeckDetail extends React.Component {
         <div className="column is-4">
           <DeckPanel
             deck={this.state.deck}
-            storeDeckDetails={this.storeDeckDetails}
+            handleChange={this.handleChange}
             removeCardFromDeck={this.removeCardFromDeck}
             saveDeck={this.saveDeck}
           />
