@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import Auth from '../../lib/Auth'
 
-class Navbar extends React.Component {
+class NavBar extends React.Component {
 
   constructor() {
     super()
@@ -53,7 +53,7 @@ class Navbar extends React.Component {
           <div className="navbar-start">
             <Link to="/" className="navbar-item">
               <div className="navbar-brand">
-                <div className="navbar-item title">Mana Curve</div>
+                <div className="navbar-item title is-1">MC<i className="ms ms-guild-simic has-text-weight-medium"></i></div>
               </div>
             </Link>
             <div className="navbar-item has-dropdown is-hoverable">
@@ -86,4 +86,4 @@ class Navbar extends React.Component {
   }
 }
 
-export default withRouter(Navbar)
+export default withRouter(NavBar)

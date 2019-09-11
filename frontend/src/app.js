@@ -4,7 +4,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom'
 import 'bulma'
 import './style.scss'
 
-import Navbar from './components/common/NavBar'
+import NavBar from './components/common/NavBar'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import DeckDetailMain from './components/deck-detail/DeckDetailMain'
@@ -15,7 +15,7 @@ class App extends React.Component {
   render() {
     return(
       <HashRouter>
-        <Navbar />
+        <NavBar />
         <Switch>
           <Route path="/register" component={Register}/>
           <Route path="/login" component={Login}/>

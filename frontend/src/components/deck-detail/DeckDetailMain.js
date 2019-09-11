@@ -76,7 +76,6 @@ class DeckDetailMain extends React.Component {
           return !/[WUBRG]/.test(cardValue)
         } else if (typeof filterValue === 'string') return cardValue.toLowerCase().includes(filterValue)
         return cardValue === filterValue
-
       })
     }
     cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)

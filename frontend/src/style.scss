@@ -1,24 +1,73 @@
-nav.panels div.deck-cards {
-  height: 110vh;
-  overflow: scroll;
-  border: solid 1px lightgrey;
-  border-top: none;
+body {
   background-color: #fafafa;
 
-  div.panel-block {
-    background-color: white;
+  h1, h2, h3, h4, div, p, button, input {
+    font-family: 'Aladin', cursive;
+    letter-spacing: 2px;
+    font-weight: 800;
+  }
+
+  .box, .hero {
+    background-color: #ececec;
+  }
+
+  i.ms-guild-simic {
+    position: relative;
+    top: -2px;
+    margin-left: 5px;
+    background-color: transparent;
+  }
+
+  nav.panels {
+
+    div.win-rate {
+
+      p {
+        margin-left: 7px;
+      }
+
+      input {
+        margin-left: 10px;
+        width: 65px;
+      }
+    }
+
+    div.deck-cards {
+      height: 110vh;
+      overflow: scroll;
+      border: solid 1px lightgrey;
+      border-top: none;
+      background-color: #fafafa;
+
+      div.panel-block {
+        background-color: white;
+
+        p {
+          margin-left: 7px;
+        }
+      }
+    }
+  }
+
+
+
+  div.card-front {
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 15px;
+
+    &:hover {
+      border-color: dodgerblue;
+    }
+  }
+
+  div.navbar-brand {
+    div.logo {
+      font-family: 'Aladin', cursive;
+    }
   }
 }
 
-div.card-front {
-  cursor: pointer;
-  border: 2px solid transparent;
-  border-radius: 15px;
-
-  &:hover {
-    border-color: dodgerblue;
-  }
-}
-
+@import url('https://fonts.googleapis.com/css?family=Aladin&display=swap');
 @charset "utf-8";
 @import "~bulma/bulma";

@@ -8,22 +8,16 @@ const DeckPanel = ({ deck, handleChange, removeCardFromDeck, saveDeck }) => {
       <nav className="panels">
         <div className="panel-heading">
           <input
-            className="input is-medium has-text-weight-medium"
+            className="input is-large has-text-weight-bold"
             name="name"
             onChange={handleChange}
             value={deck.name}
           />
         </div>
-        {
-          deck.created_by &&
-          <div className="panel-block">
-            <p>Created by: <span className="has-text-weight-medium">{deck.created_by.username}</span></p>
-          </div>
-        }
-        <div className="panel-block">
-          <p>Win Rate %</p>
+        <div className="panel-block win-rate">
+          <p>Win Rate(%): </p>
           <input
-            className="input has-text-weight-medium"
+            className="input is-medium has-text-weight-medium"
             type="number"
             name="win_rate"
             onChange={handleChange}
