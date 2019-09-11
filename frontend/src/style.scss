@@ -6,8 +6,16 @@ body {
     font-weight: 800;
   }
 
+  i {
+    letter-spacing: 0;
+  }
+
   .box, .hero {
     background-color: #ececec;
+  }
+
+  div.ms {
+    text-align: center;
   }
 
   i.ms-guild-simic {
@@ -42,7 +50,12 @@ body {
         background-color: white;
 
         p {
+          font-size: 20px;
           margin-left: 7px;
+        }
+
+        i.ms-cost {
+          margin-left: 2px;
         }
       }
     }

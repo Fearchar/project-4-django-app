@@ -1,5 +1,7 @@
 import React from 'react'
 
+import DeckCard from './DeckCard'
+
 const DeckPanel = ({ deck, handleChange, removeCardFromDeck, saveDeck }) => {
   const deckCards = deck.cards
   return (
@@ -38,13 +40,11 @@ const DeckPanel = ({ deck, handleChange, removeCardFromDeck, saveDeck }) => {
         }
         <div className="deck-cards">
           {deckCards.map((card, i) =>
-            <div
+            <DeckCard
               key={i}
-              className="panel-block"
-              onClick={() => removeCardFromDeck(card)}
-            >
-              <p>{card.manaCost} {card.name}</p>
-            </div>
+              card={card}
+              removeCardFromDeck={removeCardFromDeck}
+            />
           )}
         </div>
       </nav>

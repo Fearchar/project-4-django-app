@@ -77,7 +77,6 @@ class DeckDetailMain extends React.Component {
         return cardValue === filterValue
       })
     }
-    cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
     return cards
   }
 
@@ -139,12 +138,19 @@ class DeckDetailMain extends React.Component {
 
   getCards() {
     axios.get('/api/cards/')
-      .then(res => this.setState({cards: res.data}))
+      .then(res => {
+        const cards = res.data.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+        this.setState({ cards })
+      })
   }
 
   getDeck() {
     axios.get(`/api/decks/${this.props.match.params.id}`)
-      .then(res => this.setState({ deck: res.data }))
+      .then(res => {
+        const deck = res.data
+        deck.cards = deck.cards.sort((aCard, bCard) => aCard.cmc - bCard.cmc)
+        this.setState({ deck })
+      })
   }
 
   startPage() {
@@ -181,43 +187,52 @@ class DeckDetailMain extends React.Component {
     const cards = mode === 'show' ? this.filterCards(this.state.deck.cards) : this.filterCards(this.state.cards)
     const totalPages = Math.floor((cards.length - 1) / this.state.pageSize)
     return (
-      <div className="columns">
-        <div className={`column ${mode === 'show' ? '' : 'is-8'}`}>
-          <div className="section">
-            <FilterBar
-              cardFilters={this.state.cardFilters}
-              storeCardFilters={this.storeCardFilters}
-              resetFilters={this.resetFilters}
-            />
-            <PaginationBar
-              pageIndex={this.state.pageIndex}
-              totalPages={totalPages}
-              changePage={this.changePage}
-            />
-            <CardColumns
-              mode={mode}
-              cards={cards}
-              pageIndex={this.state.pageIndex}
-              pageSize={this.state.pageSize}
-              addCardToDeck={this.addCardToDeck}
-            />
-            <PaginationBar
-              pageIndex={this.state.pageIndex}
-              totalPages={totalPages}
-              changePage={this.changePage}
-            />
+      <div>
+        <section className="hero">
+          <div className="hero-body">
+            <div className="container">
+              <h1 className="title is-1">{mode === 'show' && this.state.deck.name}</h1>
+            </div>
           </div>
+        </section>
+        <div className="columns">
+          <div className={`column ${mode === 'show' ? '' : 'is-8'}`}>
+            <div className="section">
+              <FilterBar
+                cardFilters={this.state.cardFilters}
+                storeCardFilters={this.storeCardFilters}
+                resetFilters={this.resetFilters}
+              />
+              <PaginationBar
+                pageIndex={this.state.pageIndex}
+                totalPages={totalPages}
+                changePage={this.changePage}
+              />
+              <CardColumns
+                mode={mode}
+                cards={cards}
+                pageIndex={this.state.pageIndex}
+                pageSize={this.state.pageSize}
+                addCardToDeck={this.addCardToDeck}
+              />
+              <PaginationBar
+                pageIndex={this.state.pageIndex}
+                totalPages={totalPages}
+                changePage={this.changePage}
+              />
+            </div>
+          </div>
+          {mode === 'show' ? '' :
+            <div className="column is-4">
+              <DeckPanel
+                deck={this.state.deck}
+                handleChange={this.handleChange}
+                removeCardFromDeck={this.removeCardFromDeck}
+                saveDeck={this.saveDeck}
+              />
+            </div>
+          }
         </div>
-        {mode === 'show' ? '' :
-          <div className="column is-4">
-            <DeckPanel
-              deck={this.state.deck}
-              handleChange={this.handleChange}
-              removeCardFromDeck={this.removeCardFromDeck}
-              saveDeck={this.saveDeck}
-            />
-          </div>
-        }
       </div>
     )
   }
