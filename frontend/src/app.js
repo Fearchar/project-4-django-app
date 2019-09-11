@@ -19,8 +19,8 @@ class App extends React.Component {
         <Switch>
           <Route path="/register" component={Register}/>
           <Route path="/login" component={Login}/>
-          <Route path="/decks/edit/:id" component={DeckDetailMain}/>
           <Route path="/decks/new" component={DeckDetailMain}/>
+          <Route path="/decks/:id/edit" component={DeckDetailMain}/>
           <Route path="/decks" component={DeckIndexMain}/>
           <Route path="/" component={HomeMain}/>
         </Switch>

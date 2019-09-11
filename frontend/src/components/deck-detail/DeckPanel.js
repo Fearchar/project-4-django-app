@@ -20,8 +20,8 @@ const DeckPanel = ({ deck, handleChange, removeCardFromDeck, saveDeck }) => {
             className="input is-medium has-text-weight-medium"
             type="number"
             name="win_rate"
-            onChange={handleChange}
             value={deck.win_rate}
+            onChange={handleChange}
           />
         </div>
         <div className="panel-block">
