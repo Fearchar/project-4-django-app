@@ -21,7 +21,6 @@ class HomeMain extends React.Component {
   }
 
   render() {
-    if (!this.state.topDecks[0]) return <h1>Loading ...</h1>
     return (
       <div>
         <section className="hero">
@@ -37,9 +36,9 @@ class HomeMain extends React.Component {
         <hr />
         <div className="container">
           <h3 className="title is-2">Top Decks</h3>
-          <TopDecks
+          {this.state.topDecks && <TopDecks
             decks={this.state.topDecks}
-          />
+          />}
         </div>
         <hr />
         <div className="container">
