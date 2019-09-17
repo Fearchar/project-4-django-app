@@ -2,7 +2,7 @@ import React from 'react'
 
 import DeckCard from './DeckCard'
 
-const DeckPanel = ({ deck, handleChange, removeCardFromDeck, saveDeck }) => {
+const DeckPanel = ({ deck, handleChange, removeCardFromDeck, saveDeck, deleteDeck }) => {
   const deckCards = deck.cards
   return (
     <div className="container">
@@ -31,7 +31,10 @@ const DeckPanel = ({ deck, handleChange, removeCardFromDeck, saveDeck }) => {
             className="button"
             onClick={saveDeck}
           >Save</button>
-          <button className="button">Delete</button>
+          <button
+            className="button"
+            onClick={deleteDeck}
+          >Delete</button>
         </div>
         {
           deck.saveMessage &&

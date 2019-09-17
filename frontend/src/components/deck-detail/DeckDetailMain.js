@@ -40,6 +40,7 @@ class DeckDetailMain extends React.Component {
     this.addCardToDeck = this.addCardToDeck.bind(this)
     this.removeCardFromDeck = this.removeCardFromDeck.bind(this)
     this.saveDeck = this.saveDeck.bind(this)
+    this.deleteDeck = this.deleteDeck.bind(this)
   }
 
   changePage(pageIndex, totalPages) {
@@ -144,6 +145,23 @@ class DeckDetailMain extends React.Component {
     }
   }
 
+  deleteDeck() {
+    if (this.mode === 'new') {
+      const deck = {
+        name: '',
+        cards: []
+      }
+      this.setState({ deck })
+    } else if (this.state.mode === 'edit'){
+      axios.delete(`/api/decks/${this.props.match.params.id}`, {
+        headers: {
+          Authorization: `Bearer ${Auth.getToken()}`
+        }
+      })
+        .then(this.props.history.push('/'))
+    }
+  }
+
   getCards() {
     axios.get('/api/cards/')
       .then(res => {
@@ -188,7 +206,6 @@ class DeckDetailMain extends React.Component {
       this.startPage()
     }
   }
-
 
   render() {
     const mode = this.state.mode
@@ -237,6 +254,7 @@ class DeckDetailMain extends React.Component {
                 handleChange={this.handleChange}
                 removeCardFromDeck={this.removeCardFromDeck}
                 saveDeck={this.saveDeck}
+                deleteDeck={this.deleteDeck}
               />
             </div>
           }
