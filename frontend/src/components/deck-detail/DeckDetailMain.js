@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 import Auth from '../../lib/Auth'
 
@@ -130,7 +131,10 @@ class DeckDetailMain extends React.Component {
           Authorization: `Bearer ${Auth.getToken()}`
         }
       })
-        .then(res => this.props.history.push(`/decks/${res.data.id}/edit`))
+        .then(res => {
+          toast.success('Deck saved')
+          this.props.history.push(`/decks/${res.data.id}/edit`)
+        })
     } else if (this.state.mode === 'edit') {
       axios.put(`/api/decks/${this.props.match.params.id}`, deckData, {
         headers: {
@@ -140,6 +144,7 @@ class DeckDetailMain extends React.Component {
         .then(res => {
           const deck = res.data
           deck.cards = this.sortByCmc(deck.cards)
+          toast.success('Deck saved')
           this.setState({ deck: res.data })
         })
     }
@@ -158,7 +163,10 @@ class DeckDetailMain extends React.Component {
           Authorization: `Bearer ${Auth.getToken()}`
         }
       })
-        .then(this.props.history.push('/'))
+        .then(() => {
+          toast.success('Deck deleted')
+          this.props.history.push('/')
+        })
     }
   }
 
