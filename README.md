@@ -6,6 +6,8 @@ Mana Curve is an online deck builder for the strategic card game Magic: The Gath
 
 ![Mana Curve](https://i.imgur.com/HHQ5ycf.png)
 
+---
+
 ![Mana Curve](https://i.imgur.com/Hg9BK8O.png)
 
 ## The Project Brief
