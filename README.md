@@ -8,7 +8,6 @@ Mana Curve is an online deck builder for the strategic card game Magic: The Gath
 
 For this one week project we were asked to build a full stack website using React and a fully RESTful API created with Django.
 
-
 ## Technologies Used
 * JavaScript
 * React
@@ -113,6 +112,11 @@ def update(self, instance, validated_data):
 ## Challenges
 
 The most significant challenge faced during this project was attempting to resolve the duplicate constraint. I was unaware that it existed and it took a while to discover what precisely was stopping me from saving multiple instances of the same card, this being a stipulation of not only the SQLite3 database which comes as standard with Django, but also the Django Rest Framework’s inbuilt create and update methods. This required me to change database and use SQL commands to both remove the database restriction and create relationships between cards and decks in the deck serializers.
+
+## Changes to approach
+
+If I were to modify the project, one of the significant things I would change would be the way that the deck show page works. Instead of having one page that operates as the show, edit and new, I would split these out into three different components. This would remove the inelegant if statements in functions such as the save, which need to operate differently depending on what page the user is on.
+
 
 ## Future Features
 
