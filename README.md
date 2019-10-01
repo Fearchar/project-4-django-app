@@ -41,8 +41,7 @@ My API used three models for Cards, Decks and Games. The finished project does n
 
 The API also uses Django’s built in User model in combination with a separate Django app for authentication, and a number of many to many relationships are created between the Cards model and Decks to add additional information to User records.
 
-**Card and Deck Modals**
-
+*Card and Deck Modals*
 ```python
 class Card(models.Model):
     name = models.CharField(max_length=50)
@@ -119,6 +118,6 @@ The most significant challenge faced during this project was attempting to resol
 
 There were a number of features I had initially planned for this project, but was unable to complete within the timeframe. Here is some of what I would like to achieve given more time on the project:
 
-A tour of the deck pages to make it clearer how to use for people who are not familiar with the subject matter and similar sites.
-A score tracker to be used while playing a game which generates a game record showing what decks played in the game and which one won. This game record would then be used to determine deck’s win rates.
-User pages which show what decks user’s play most, what decks they’ve created and what cards they have in their collection.
+* A tour of the deck pages to make it clearer how to use for people who are not familiar with the subject matter and similar sites.
+* A score tracker to be used while playing a game which generates a game record showing what decks played in the game and which one won. This game record would then be used to determine deck’s win rates.
+* User pages which show what decks user’s play most, what decks they’ve created and what cards they have in their collection.
