@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mana Curve is an online deck builder for the strategic card game Magic: The Gathering (MTG). The site enables users to use cards drawn from the MTG API to create decks for them to play, and compare their win rates to see which decks perform best.
+Mana Curve is an online deck builder for the strategic card game Magic: The Gathering (MTG). The site enables users to use cards drawn from the MTG API to create decks for them to play, and compare their win rates to see which decks perform best. You can visit the site [here](https://mana-curve.herokuapp.com/#/).
 
 ## The Project Brief
 
