@@ -80,11 +80,12 @@ The MTG API sends back to users about how many pages there are of cards in any s
 
 In MTG decks often have more than one copy of the same card. Django is not well set up for this and SQLite3, the default database engine which comes with Django, does not allow you to save multiple references to the same object in a many to many relationship. In order to allow this feature of deck building, I had to use a PostgreSQL database and remove the duplicate constraint manually via the terminal. This also required me to define bespoke create and update methods in my deck serializers which added decks to the database directly using SQL commands
 
-##### Removing the Duplicate Constraint
+#####
 ```
 Run ALTER TABLE mtg_decks_deck_cards DROP CONSTRAINT mtg_decks_deck_cards_deck_id_card_id_91b63613_uniq;
 ```
-##### Update Method from WriteDeckSerializer
+*Removing the Duplicate Constraint*
+
 ```Python
 def update(self, instance, validated_data):
     cards = validated_data.pop('cards')
@@ -106,3 +107,16 @@ def update(self, instance, validated_data):
     instance.save()
     return instance
 ```
+*Update Method from WriteDeckSerializer*
+
+## Challenges
+
+The most significant challenge faced during this project was attempting to resolve the duplicate constraint. I was unaware that it existed and it took a while to discover what precisely was stopping me from saving multiple instances of the same card, this being a stipulation of not only the SQLite3 database which comes as standard with Django, but also the Django Rest Framework’s inbuilt create and update methods. This required me to change database and use SQL commands to both remove the database restriction and create relationships between cards and decks in the deck serializers.
+
+## Future Features
+
+There were a number of features I had initially planned for this project, but was unable to complete within the timeframe. Here is some of what I would like to achieve given more time on the project:
+
+A tour of the deck pages to make it clearer how to use for people who are not familiar with the subject matter and similar sites.
+A score tracker to be used while playing a game which generates a game record showing what decks played in the game and which one won. This game record would then be used to determine deck’s win rates.
+User pages which show what decks user’s play most, what decks they’ve created and what cards they have in their collection.
