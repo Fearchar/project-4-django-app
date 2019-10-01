@@ -41,7 +41,7 @@ My API used three models for Cards, Decks and Games. The finished project does n
 
 The API also uses Django’s built in User model in combination with a separate Django app for authentication, and a number of many to many relationships are created between the Cards model and Decks to add additional information to User records.
 
-Card and Deck Modals
+##### Card and Deck Modals
 ```python
 class Card(models.Model):
     name = models.CharField(max_length=50)
@@ -75,3 +75,34 @@ MTG is a card game has existed for over two decades, during which period tens of
 In order to get the images and details from the cards that I needed for my site, I used the MTG open API. The API has good documentation and is easy to use but, due to its popularity, it can take as much as half a minute to make a request for a single page of data (100 cards). I didn’t want this response time to slow down my site, so I created a Django command which can be called from the terminal to download the data from the relevant sets to my database.
 
 The MTG API sends back to users about how many pages there are of cards in any set through a Link header. The command sends an initial request to the API, fetching the first page and retrieving the total number of pages from the Link header using regex and looped through the pages making subsequent requests, organising the card data that I needed into the form I needed and then saving it to my database.
+
+#### Removing The Duplicate Record Database Constraint
+
+In MTG decks often have more than one copy of the same card. Django is not well set up for this and SQLite3, the default database engine which comes with Django, does not allow you to save multiple references to the same object in a many to many relationship. In order to allow this feature of deck building, I had to use a PostgreSQL database and remove the duplicate constraint manually via the terminal. This also required me to define bespoke create and update methods in my deck serializers which added decks to the database directly using SQL commands
+
+##### Removing the Duplicate Constraint
+```
+Run ALTER TABLE mtg_decks_deck_cards DROP CONSTRAINT mtg_decks_deck_cards_deck_id_card_id_91b63613_uniq;
+```
+##### Update Method from WriteDeckSerializer
+```Python
+def update(self, instance, validated_data):
+    cards = validated_data.pop('cards')
+    instance.name = validated_data.get('name', instance.name)
+    instance.win_rate = validated_data.get('win_rate', instance.win_rate)
+    instance.imageUrl = validated_data.get('imageUrl', instance.imageUrl)
+
+    delete_command = f'DELETE FROM mtg_decks_deck_cards WHERE deck_id = {instance.id}'
+
+
+    insert_command = 'INSERT INTO mtg_decks_deck_cards (deck_id, card_id) VALUES '
+
+    insert_command += ','.join([f'({instance.id}, {card.id})' for card in cards])
+
+    with connection.cursor() as cursor:
+        cursor.execute(delete_command)
+        cursor.execute(insert_command)
+
+    instance.save()
+    return instance
+```
