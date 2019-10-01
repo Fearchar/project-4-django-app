@@ -41,7 +41,8 @@ My API used three models for Cards, Decks and Games. The finished project does n
 
 The API also uses Django’s built in User model in combination with a separate Django app for authentication, and a number of many to many relationships are created between the Cards model and Decks to add additional information to User records.
 
-##### Card and Deck Modals
+**Card and Deck Modals**
+
 ```python
 class Card(models.Model):
     name = models.CharField(max_length=50)
@@ -81,11 +82,13 @@ The MTG API sends back to users about how many pages there are of cards in any s
 In MTG decks often have more than one copy of the same card. Django is not well set up for this and SQLite3, the default database engine which comes with Django, does not allow you to save multiple references to the same object in a many to many relationship. In order to allow this feature of deck building, I had to use a PostgreSQL database and remove the duplicate constraint manually via the terminal. This also required me to define bespoke create and update methods in my deck serializers which added decks to the database directly using SQL commands
 
 #####
+
+*Removing the Duplicate Constraint*
 ```
 Run ALTER TABLE mtg_decks_deck_cards DROP CONSTRAINT mtg_decks_deck_cards_deck_id_card_id_91b63613_uniq;
 ```
-*Removing the Duplicate Constraint*
 
+*Update Method from WriteDeckSerializer*
 ```Python
 def update(self, instance, validated_data):
     cards = validated_data.pop('cards')
@@ -107,7 +110,6 @@ def update(self, instance, validated_data):
     instance.save()
     return instance
 ```
-*Update Method from WriteDeckSerializer*
 
 ## Challenges
 
